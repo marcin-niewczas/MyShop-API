@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #Custom
-/MyShop.API/wwwroot/photos/
+/src/MyShop.API/wwwroot/photos/
