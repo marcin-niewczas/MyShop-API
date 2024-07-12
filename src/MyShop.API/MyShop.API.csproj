@@ -17,8 +17,4 @@
     <ProjectReference Include="..\MyShop.Infrastructure\MyShop.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\photos\" />
-  </ItemGroup>
-
 </Project>
