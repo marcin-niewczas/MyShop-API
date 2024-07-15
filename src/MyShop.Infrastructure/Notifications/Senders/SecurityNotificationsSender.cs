@@ -9,7 +9,7 @@ internal sealed class SecurityNotificationsSender(
 {
     public Task SendAsync(
         Guid registeredUserId,
-        NotificationRegisteredUser notification,
+        Notification notification,
         NotificationSenderType[]? chosenNotificationSenderTypes = null,
         CancellationToken cancellationToken = default
         ) => Task.WhenAll(chosenNotificationSenderTypes switch

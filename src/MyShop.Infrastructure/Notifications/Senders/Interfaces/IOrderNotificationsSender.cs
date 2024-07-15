@@ -8,7 +8,7 @@ public interface IOrderNotificationsSender
     Task SendAsync(
         Order order,
         OrderNotificationType orderNotificationType,
-        NotificationRegisteredUser? notification,
+        Notification? notification,
         NotificationSenderType[]? chosenNotificationSenderTypes = null,
         CancellationToken cancellationToken = default
         );

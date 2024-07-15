@@ -11,6 +11,6 @@ internal sealed class HubSecurityNotification(
 {
     public NotificationSenderType NotificationSenderType => NotificationSenderType.Hub;
 
-    public Task NotifyAsync(Guid registeredUserId, NotificationRegisteredUser notification, CancellationToken cancellationToken = default)
+    public Task NotifyAsync(Guid registeredUserId, Notification notification, CancellationToken cancellationToken = default)
          => notificationHub.Clients.Group(registeredUserId.ToString()).ReceiveNotification(notification.ToNotificationDto());
 }

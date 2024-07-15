@@ -44,11 +44,11 @@ internal sealed class OrderHasBeenCanceledEventHandler(
             cancellationToken: cancellationToken
             );
 
-        NotificationRegisteredUser? notification = null;
+        Notification? notification = null;
 
         if (order is not null and { User: RegisteredUser })
         {
-            notification = new NotificationRegisteredUser(
+            notification = new Notification(
                 notificationType: NotificationType.Order,
                 message: $"The {nameof(Order)} status has been changed to {order.Status}.",
                 registeredUserId: order.UserId,

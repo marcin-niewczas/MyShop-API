@@ -50,18 +50,18 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
 
         if (updatedOrders.Count > 0)
         {
-            List<NotificationRegisteredUser> notificationList = [];
-            List<(NotificationRegisteredUser? Notification, Order Order)> notificationOrderList = [];
-            NotificationRegisteredUser? notification = null;
+            List<Notification> notificationList = [];
+            List<(Notification? Notification, Order Order)> notificationOrderList = [];
+            Notification? notification = null;
 
             foreach (var order in updatedOrders)
             {
                 if (order.User is RegisteredUser)
                 {
                     notification = new(
-                        order.User.Id,
                         NotificationType.Order,
                         $"The {nameof(Order)} status has been changed to {order.Status}.",
+                        order.User.Id,
                         order.Id.ToString()
                         );
 

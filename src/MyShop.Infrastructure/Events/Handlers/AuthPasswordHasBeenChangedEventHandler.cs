@@ -13,10 +13,10 @@ internal sealed class AuthPasswordHasBeenChangedEventHandler(
 {
     public async Task HandleAsync(AuthPasswordHasBeenChanged @event, CancellationToken cancellationToken = default)
     {
-        var notification = new NotificationRegisteredUser(
-            @event.RegisteredUserId,
+        var notification = new Notification(
             NotificationType.Security,
-            "Your Password has been changed."
+            "Your Password has been changed.",
+            @event.RegisteredUserId
             );
 
         await unitOfWork.AddAsync(notification, cancellationToken);

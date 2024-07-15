@@ -16,5 +16,4 @@ app.UseInfrastructure(builder.Configuration)
    .UseApplication(builder.Configuration)
    .MapApiEndpoints();
 
-
 app.Run();

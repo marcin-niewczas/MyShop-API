@@ -12,7 +12,7 @@ internal class EmailOrderNotification(
     public Task NotifyAsync(
         Order order,
         OrderNotificationType orderNotificationType,
-        NotificationRegisteredUser? notification,
+        Notification? notification,
         CancellationToken cancellationToken = default
         )
     {

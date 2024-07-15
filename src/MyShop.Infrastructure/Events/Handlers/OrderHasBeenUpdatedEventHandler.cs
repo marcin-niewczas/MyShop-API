@@ -24,11 +24,11 @@ internal sealed class OrderHasBeenUpdatedEventHandler(
 
         if (order is not null)
         {
-            NotificationRegisteredUser? notification = null;
+            Notification? notification = null;
 
             if (order.User is RegisteredUser)
             {
-                notification = new NotificationRegisteredUser(
+                notification = new Notification(
                     notificationType: NotificationType.Order,
                     message: $"The {nameof(Order)} has been updated.",
                     registeredUserId: order.UserId,

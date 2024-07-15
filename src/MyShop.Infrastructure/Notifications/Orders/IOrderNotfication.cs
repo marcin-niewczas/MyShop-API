@@ -8,7 +8,7 @@ internal interface IOrderNotfication
     Task NotifyAsync(
         Order order,
         OrderNotificationType orderNotificationType,
-        NotificationRegisteredUser? notification,
+        Notification? notification,
         CancellationToken cancellationToken = default
         );
 }

@@ -14,13 +14,14 @@ internal sealed class AuthEmailHasBeenChangedEventHandler(
 {
     public async Task HandleAsync(AuthEmailHasBeenChanged @event, CancellationToken cancellationToken = default)
     {
-        var notification = new NotificationRegisteredUser(
-            @event.RegisteredUserId,
+        var notification = new Notification(
             NotificationType.Security,
-            $"Your {nameof(RegisteredUser.Email)} has been changed."
+            $"Your {nameof(RegisteredUser.Email)} has been changed.",
+            @event.RegisteredUserId
             );
 
         await unitOfWork.AddAsync(notification, cancellationToken);
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         await securityNotificationsSender.SendAsync(

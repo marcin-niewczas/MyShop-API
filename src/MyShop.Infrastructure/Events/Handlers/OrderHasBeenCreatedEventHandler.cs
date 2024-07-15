@@ -50,15 +50,15 @@ internal sealed class OrderHasBeenCreatedEventHandler(
                 );
         }
 
-        NotificationRegisteredUser? notification = null;
+        Notification? notification = null;
 
         if (order.User is RegisteredUser)
         {
-            notification = new NotificationRegisteredUser(
-               order.UserId,
-               NotificationType.Order,
-               $"The {nameof(Order)} has been created.",
-               order.Id.ToString()
+            notification = new Notification(
+               registeredUserId: order.UserId,
+               notificationType: NotificationType.Order,
+               message: $"The {nameof(Order)} has been created.",
+               resourceId: order.Id.ToString()
                );
 
             await unitOfWork.AddAsync(notification, cancellationToken);

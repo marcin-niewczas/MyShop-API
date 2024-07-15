@@ -16,6 +16,18 @@ public static class NotificationMappingExtension
             ResourceId = entity.Notification.ResourceId,
         };
 
+    public static NotificationDto ToNotificationDto(this Notification entity)
+        => new()
+        {
+            Id = entity.Id,
+            CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt,
+            NotificationType = entity.NotificationType,
+            IsRead = false,
+            Message = entity.Message,
+            ResourceId = entity.ResourceId,
+        };
+
     public static IReadOnlyCollection<NotificationDto> ToNotificationDtos(this IEnumerable<NotificationRegisteredUser> entities)
         => entities.Select(ToNotificationDto).ToArray();
 }

@@ -15,7 +15,7 @@ internal sealed class HubOrderNotification(
     public Task NotifyAsync(
         Order order,
         OrderNotificationType orderNotificationType,
-        NotificationRegisteredUser? notification,
+        Notification? notification,
         CancellationToken cancellationToken = default
         ) => (notification is not null) switch
         {

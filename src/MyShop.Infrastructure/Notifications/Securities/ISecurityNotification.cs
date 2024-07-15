@@ -6,7 +6,7 @@ internal interface ISecurityNotification
     NotificationSenderType NotificationSenderType { get; }
     Task NotifyAsync(
         Guid registeredUserId,
-        NotificationRegisteredUser notification,
+        Notification notification,
         CancellationToken cancellationToken = default
         );
 }
