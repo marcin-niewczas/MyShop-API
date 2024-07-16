@@ -18,7 +18,7 @@ The main goal of **myShop API** project was to create a flexible e-commerce plat
 
 ### Features
 - **For the entire platform**
-  - Real time notifictions with SignalR,
+  - Real time notifications with SignalR,
   - Message broker built with Channel
     - CRON Jobs,
     - Async Tasks (e.g. Payment Processing with **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)** )
