@@ -25,6 +25,8 @@ The main goal of **myShop API** project was to create a flexible e-commerce plat
 - **E-Commerce**
   - Customized Home Page
   - Products List
+    - Advanced Filtering (by Variant Options, Detail Options, Price)
+    - Advanced Sorting (e.g. Top Rated, Bestsellers, Most Reviewed Products)
   - Product Detail (Single or Product Variants)
   - Product Reviews
   - Favorites
