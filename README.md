@@ -38,7 +38,7 @@ The main goal of **myShop API** project was to create a flexible e-commerce plat
   - E-Commerce Home Page Management
   - Categories Management
   - Product Options Management
-  - Product, Product Variants, Product Photos Management
+  - Product, Product Reviews, Product Variants, Product Photos Management
   - Orders Management
 - **Account**
   - Basic Account Information Management
