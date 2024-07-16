@@ -54,7 +54,7 @@ The main goal of **myShop API** project was to create a flexible e-commerce plat
 ### Built with
 * .NET 8
 * ASP.NET Core Web API
-* ASP.NET Core Authentications JWT Bearer
+* ASP.NET Core Authentication JWT Bearer
 * Entity Framework Core (MS SQL)
 * ASP.NET Core SignalR
 * Swagger
