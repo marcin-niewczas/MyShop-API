@@ -7,6 +7,6 @@
 
 ## Related Projects
 * **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
-* **[myShopPay](https://github.com/marcin-niewczas/MyShopPay)**
+* **[myShopPay](https://github.com/marcin-niewczas/MyShop-Pay)**
 
 ## Getting Started
