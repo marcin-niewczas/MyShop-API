@@ -32,7 +32,7 @@ The main goal of **myShop API** project was to create a flexible e-commerce plat
   - Favorites
   - Quick Add Product
   - Shopping Basket
-  - Order Stepper
+  - Ordering Wizard
 - **Management Panel**
   - Dashboard
   - E-Commerce Home Page Management
