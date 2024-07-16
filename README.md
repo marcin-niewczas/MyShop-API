@@ -17,7 +17,7 @@ The main goal of **myShop API** project was to create a flexible e-commerce plat
 - **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
 
 ### Features
-- For the entire platofrm
+- For the entire platform
   - Real time notifictions with SignalR,
   - Message broker built with Channel
     - CRON Jobs,
