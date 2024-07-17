@@ -81,7 +81,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 > [!Important]
 > For fully functionality, the **myShop API** project must have **[related projects](#related-projects)** running.
 > 
-> Full instruction for starting **myShop** projects is **[here](https://github.com/marcin-niewczas/MyShop-API#launch-myshop-projects)**.
+> Full instruction for starting **myShop** projects is **[here](#launch-myshop-projects)**.
 1. Clone repository
    ```sh
    git clone https://github.com/marcin-niewczas/MyShop-API.git
