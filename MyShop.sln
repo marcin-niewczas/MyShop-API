@@ -5,13 +5,18 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{763257AD-0239-4E55-99A0-CF4A255DF522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.API", "src\MyShop.API\MyShop.API.csproj", "{C1D4DAD4-4C49-4E88-9338-C194A4FA9AAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.API", "src\MyShop.API\MyShop.API.csproj", "{C1D4DAD4-4C49-4E88-9338-C194A4FA9AAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.Core", "src\MyShop.Core\MyShop.Core.csproj", "{56B27CEA-38C2-4C8F-9899-AE8B91302190}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.Core", "src\MyShop.Core\MyShop.Core.csproj", "{56B27CEA-38C2-4C8F-9899-AE8B91302190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.Infrastructure", "src\MyShop.Infrastructure\MyShop.Infrastructure.csproj", "{A4A3689A-8445-4744-940D-0C10FB1CB1A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.Infrastructure", "src\MyShop.Infrastructure\MyShop.Infrastructure.csproj", "{A4A3689A-8445-4744-940D-0C10FB1CB1A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShop.Application", "src\MyShop.Application\MyShop.Application.csproj", "{BEC01077-C16F-4527-A0D9-C0445B4DB227}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShop.Application", "src\MyShop.Application\MyShop.Application.csproj", "{BEC01077-C16F-4527-A0D9-C0445B4DB227}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{684AA77F-3FE3-4B7D-8EF7-A4913EAEAA41}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
