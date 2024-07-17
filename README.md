@@ -19,6 +19,14 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 ### Features
 - **For the entire platform**
   - Real time notifications with SignalR,
+  - User Roles
+    - Guest
+    - Customer
+    - Employee
+      - Seller
+      - Manager
+      - Admin
+      - SuperAdmin
   - Message broker built with Channel
     - CRON Jobs,
     - Async Tasks (e.g. Payment Processing with **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)** )
@@ -27,12 +35,14 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
   - Products List
     - Advanced Filtering (by Variant Options, Detail Options, Price)
     - Advanced Sorting (e.g. Top Rated, Bestsellers, Most Reviewed Products)
+    - Group Products By All Variant Options or Main Variant Option
   - Product Detail (Single or Product Variants)
   - Product Reviews
   - Favorites
   - Quick Add Product
   - Shopping Basket
   - Ordering Wizard
+  - Create Order by Guest
 - **Management Panel**
   - Dashboard
   - E-Commerce Home Page Management
