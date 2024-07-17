@@ -7,8 +7,8 @@
 1. [About This Project](#about-this-project)
     - [Features](#features)
     - [Built with](#built-with)
-3. [Related Projects](#related-projects)
-4. [Getting Started](#getting-started)
+2. [Related Projects](#related-projects)
+3. [Getting Started](#getting-started)
 
 ## About This Project
 The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit of Work and Event Driven Architecture Patterns.
