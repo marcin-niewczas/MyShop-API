@@ -101,14 +101,14 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
    ```
 ## Launch myShop Projects
-### Clone repositories
+### 1. Clone repositories
    ```sh
    git clone https://github.com/marcin-niewczas/MyShop-API.git
    git clone https://github.com/marcin-niewczas/MyShop-Angular-Client.git
    git clone https://github.com/marcin-niewczas/MyShop-Pay.git
    ```
 
-### myShop API
+### 2. myShop API
 1. Go to root folder of **myShop API** repository
    ```sh
    cd MyShop-API
@@ -127,7 +127,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```sh
    dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
    ```
-### myShop Angular Client
+### 3. myShop Angular Client
 1. Go to root folder of **myShop Angular Client** repository
    ```sh
    cd ../MyShop-Angular-Client
@@ -141,7 +141,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ng serve
    ```
 
-### myShop Pay
+### 4. myShop Pay
 1. Go to root folder of **myShop Pay** repository
    ```sh
    cd ../MyShop-Pay
