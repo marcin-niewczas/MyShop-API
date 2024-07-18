@@ -109,7 +109,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```
 
 ### myShop API
-1. Go to root folder of **myShop Pay** repository
+1. Go to root folder of **myShop API** repository
    ```sh
    cd MyShop-API
    ```
@@ -128,7 +128,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
    ```
 ### myShop Angular Client
-1. Go to root folder of **myShop Pay** repository
+1. Go to root folder of **myShop Angular Client** repository
    ```sh
    cd ../MyShop-Angular-Client
    ```
