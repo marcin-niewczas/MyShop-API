@@ -84,7 +84,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 > Full instruction for starting **myShop** projects is **[here](#launch-myshop-projects)**.
 1. Clone repository
    ```sh
-   git clone https://github.com/marcin-niewczas/MyShop-API.git
+   git clone https://github.com/marcin-niewczas/MyShop-API.git  
    ```
 2. Database
    - Windows
@@ -101,11 +101,17 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
    ```
 ## Launch myShop Projects
-
-### myShop API
-1. Clone repository
+### Clone repositories
    ```sh
    git clone https://github.com/marcin-niewczas/MyShop-API.git
+   git clone https://github.com/marcin-niewczas/MyShop-Angular-Client.git
+   git clone https://github.com/marcin-niewczas/MyShop-Pay.git
+   ```
+
+### myShop API
+1. Go to root folder of **myShop Pay** repository
+   ```sh
+   cd MyShop-API
    ```
 2. Database
    - Windows
@@ -122,9 +128,9 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
    ```
 ### myShop Angular Client
-1. Clone repository
+1. Go to root folder of **myShop Pay** repository
    ```sh
-   git clone https://github.com/marcin-niewczas/MyShop-Angular-Client.git
+   cd ../MyShop-Angular-Client
    ```
 2. In root folder of repository install NPM packages
    ```sh
@@ -136,17 +142,16 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```
 
 ### myShop Pay
-
-1. Clone repository
+1. Go to root folder of **myShop Pay** repository
    ```sh
-   git clone https://github.com/marcin-niewczas/MyShop-Pay.git
+   cd ../MyShop-Pay
    ```
-2. Database
+3. Database
    - Windows
      - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
    - Mac OS/Linux
      - Go to `./MyShopPay/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`     
-3. In root directory of repository run
+4. In root directory of repository run
    ```sh
    dotnet run --project ./MyShopPay/MyShopPay.csproj --launch-profile https
    ```
