@@ -111,7 +111,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    - Windows
      - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
    - Mac OS/Linux
-     - Go to `./MyShopAPI/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`
+     - Go to `./src/MyShop.API/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`
      - Run **Docker App**
      - In root directory of repository run
        ```sh
@@ -119,7 +119,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
        ```
 3. In root directory of repository run
    ```sh
-   dotnet run --project ./MyShopAPI/MyShopPay.csproj --launch-profile MyShop.HTTPS.Development
+   dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
    ```
 ### myShop Angular Client
 1. Clone repository
