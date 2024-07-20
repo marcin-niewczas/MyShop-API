@@ -26,11 +26,6 @@ internal sealed class UpdatePositionsOfMainPageSectionsMpCommandHandler(
             });
         }
 
-        if (sections.Count != command.IdPositions.Count)
-        {
-            throw new NotFoundException($"Some {nameof(IEntity.Id)}/{nameof(IEntity.Id)}s is not found.");
-        }
-
         var maxPosition = sections.Count - 1;
 
         if (!MainPageSectionPosition.IsValid(command.IdPositions.Max(c => c.Position)))

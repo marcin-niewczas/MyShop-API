@@ -25,7 +25,7 @@ public sealed record MainPageSectionPosition : IValidatableValueObject
         => Value.ToString();
 
     public const int Min = 0;
-    public const int Max = 1;
+    public const int Max = 4;
 
     public static bool IsValid(int value)
         => value is >= Min and <= Max;

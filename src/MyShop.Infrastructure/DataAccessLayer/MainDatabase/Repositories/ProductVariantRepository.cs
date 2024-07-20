@@ -220,12 +220,7 @@ internal sealed class ProductVariantRepository(
                 )
               );
         //.Where(e => minPrice == null || e.Price >= minPrice)
-        //.Where(e => maxPrice == null || e.Price <= maxPrice);
-
-        if (sortBy is GetPagedProductsEcSortBy.Newest)
-        {
-            baseQuery = baseQuery.OrderBy(e => e.CreatedAt);
-        }
+        //.Where(e => maxPrice == null || e.Price <= maxPrice);     
 
         if (sortBy is GetPagedProductsEcSortBy.Bestsellers)
         {
@@ -233,8 +228,14 @@ internal sealed class ProductVariantRepository(
         }
 
         var groupQuery = baseQuery
-            .GroupBy(z => z.EncodedName)
-            .Where(e => categoryIds == null || e.Any(v => categoryIds.Contains(v.Product.CategoryId)))
+            .GroupBy(z => z.EncodedName);
+
+        if (sortBy is GetPagedProductsEcSortBy.Newest)
+        {
+            groupQuery = groupQuery.OrderByDescending(o => o.Max(m => m.CreatedAt));
+        }
+
+        var finalQuery = groupQuery.Where(e => categoryIds == null || e.Any(v => categoryIds.Contains(v.Product.CategoryId)))
             .Where(e => chosenProductVariantOptions == null ||
                         chosenProductVariantOptionKeys == null ||
                         e.Any(o => o.ProductVariantOptionValues.Count(v => chosenProductVariantOptions.Contains(Convert.ToString(v.ProductVariantOption.Name) + ":" + Convert.ToString(v.Value))) == chosenProductVariantOptionKeys.Length)
@@ -266,7 +267,7 @@ internal sealed class ProductVariantRepository(
                         .First(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main).Value,
                     MainVariantOptionValue = pv.ProductVariantOptionValues
                         .First(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Main).Value,
-                    HasMultipleVariants = pv.ProductVariantOptionValues.Count > 1,
+                    HasMultipleVariants = pv.ProductVariantOptionValues.Count > 2,
                     VariantLabel = pv.ProductVariantOptionValues.Count <= 1
                         ? string.Empty
                         : string.Join("/", pv.Product.ProductProductVariantOptions
@@ -291,16 +292,16 @@ internal sealed class ProductVariantRepository(
 
             });
 
-        groupQuery = sortBy switch
+        finalQuery = sortBy switch
         {
-            GetPagedProductsEcSortBy.TopRated => groupQuery.OrderByDescending(g => g.ProductReviewsRate),
-            GetPagedProductsEcSortBy.MostReviewed => groupQuery.OrderByDescending(g => g.ProductReviewsCount),
-            GetPagedProductsEcSortBy.PriceAsc => groupQuery.OrderBy(g => g.MinPrice),
-            GetPagedProductsEcSortBy.PriceDesc => groupQuery.OrderByDescending(g => g.MinPrice),
-            _ => groupQuery
+            GetPagedProductsEcSortBy.TopRated => finalQuery.OrderByDescending(g => g.ProductReviewsRate),
+            GetPagedProductsEcSortBy.MostReviewed => finalQuery.OrderByDescending(g => g.ProductReviewsCount),
+            GetPagedProductsEcSortBy.PriceAsc => finalQuery.OrderBy(g => g.MinPrice),
+            GetPagedProductsEcSortBy.PriceDesc => finalQuery.OrderByDescending(g => g.MinPrice),
+            _ => finalQuery
         };
 
-        return await groupQuery.ToPagedResultAsync(
+        return await finalQuery.ToPagedResultAsync(
             pageNumber,
             pageSize,
             cancellationToken: cancellationToken

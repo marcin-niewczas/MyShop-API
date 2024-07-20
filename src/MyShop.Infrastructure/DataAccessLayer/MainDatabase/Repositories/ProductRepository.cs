@@ -38,7 +38,7 @@ internal sealed class ProductRepository(
         var splittedSearchPhrase = searchPhrase.ToLower().Split(" ");
 
         return await _dbSet
-            .Where(e => splittedSearchPhrase.All(sp =>
+            .Where(e => e.ProductVariants.Count > 0 && splittedSearchPhrase.All(sp =>
                             Convert.ToString(e.Name).ToLower().Replace(" ", "").Contains(sp) ||
                             e.Category.HierarchyDetail.HierarchyName.ToLower().Replace(" ", "").Contains(sp) ||
                             e.Category.ParentCategory!.HierarchyDetail.HierarchyName.ToLower().Replace(" ", "").Contains(sp) ||
@@ -217,7 +217,7 @@ internal sealed class ProductRepository(
         }
 
         var productDetailOptions = await _dbContext.ProductDetailOptionValues
-            .Where(e => e.Products.Any(x => categoryIds.Contains(x.CategoryId)))
+            .Where(e => e.Products.Any(x => categoryIds.Contains(x.CategoryId) && x.ProductVariants.Count > 0))
             .Select(e => new
             {
                 e.ProductDetailOption,

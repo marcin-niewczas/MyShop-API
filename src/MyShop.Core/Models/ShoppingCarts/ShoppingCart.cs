@@ -42,7 +42,7 @@ public sealed class ShoppingCart : BaseTimestampEntity
             if (_shoppingCartItems.Count >= MaxShoppingCartItems)
             {
                 throw new BadRequestException(
-                    $"The {nameof(ShoppingCart).ToTitleCase} can only have max. {MaxShoppingCartItems} items."
+                    $"The {nameof(ShoppingCart).ToTitleCase()} can only have max. {MaxShoppingCartItems} items."
                     );
             }
 

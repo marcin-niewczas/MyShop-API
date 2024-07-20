@@ -9,7 +9,8 @@ public sealed record PhotoContentType : IAllowedValues
         {
             PNG,
             JPG,
-            JPEG
+            JPEG,
+            WEBP,
         }.AsReadOnly();
 
     public string Value { get; }
@@ -17,6 +18,7 @@ public sealed record PhotoContentType : IAllowedValues
     public const string PNG = "image/png";
     public const string JPG = "image/jpg";
     public const string JPEG = "image/jpeg";
+    public const string WEBP = "image/webp";
 
     public PhotoContentType(string value)
     {

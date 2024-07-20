@@ -87,7 +87,7 @@ public sealed class Order : BaseTimestampEntity
             .Select(item => item.ToOrderProduct(this))
             .ToList();
 
-        //user.ShoppingCart.ClearShoppingCart();
+        user.ShoppingCart.ClearShoppingCart();
     }
 
     public Order(

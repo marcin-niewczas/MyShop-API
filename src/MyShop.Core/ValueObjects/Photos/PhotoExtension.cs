@@ -9,7 +9,8 @@ public sealed record PhotoExtension : IAllowedValues
         {
             PNG,
             JPG,
-            JPEG
+            JPEG,
+            WEBP,
         }.AsReadOnly();
 
     public string Value { get; }
@@ -17,6 +18,7 @@ public sealed record PhotoExtension : IAllowedValues
     public const string PNG = ".png";
     public const string JPG = ".jpg";
     public const string JPEG = ".jpeg";
+    public const string WEBP = ".webp";
 
     public PhotoExtension(string value)
     {
