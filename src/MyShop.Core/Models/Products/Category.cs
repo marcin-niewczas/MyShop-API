@@ -19,9 +19,9 @@ public sealed class Category : BaseTimestampEntity
     /// </summary>
     /// <param name="name"></param>
     /// <exception cref="ArgumentException"></exception>
-    public Category(string name)
+    public Category(CategoryName name)
     {
-        Name = name;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
         ParentCategoryId = null;
         HierarchyDetail = new(Name, Id);
     }
@@ -33,12 +33,18 @@ public sealed class Category : BaseTimestampEntity
     /// <param name="parentCategory"></param>
     /// <exception cref="ArgumentException"></exception>
     /// <exception cref="ArgumentNullException"></exception>
-    public Category(CategoryName name, Category parentCategory)
+    public Category(
+        CategoryName name,
+        Category parentCategory
+        )
     {
         if (parentCategory is null or { HierarchyDetail: null })
-            throw new ArgumentNullException(nameof(parentCategory), $"{nameof(ParentCategory)} or {nameof(ParentCategory)}.{nameof(HierarchyDetail)} cannot be null for create Child {nameof(Category)}.");
+            throw new ArgumentNullException(
+                nameof(parentCategory),
+                $"{nameof(ParentCategory)} or {nameof(ParentCategory)}.{nameof(HierarchyDetail)} cannot be null for create Child {nameof(Category)}."
+                );
 
-        Name = name;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
         ParentCategoryId = parentCategory.Id;
         HierarchyDetail = new(Name, parentCategory);
     }
@@ -62,11 +68,15 @@ public sealed class Category : BaseTimestampEntity
     public void UpdateRootCategory(CategoryName name)
     {
         if (ChildCategories is null)
-            throw new InvalidOperationException($"{nameof(ChildCategories)} must be included for update Root {nameof(Category)}.");
+        {
+            throw new InvalidOperationException(
+                $"{nameof(ChildCategories)} must be included for update Root {nameof(Category)}."
+                );
+        }
 
         var oldHierarchyName = HierarchyDetail.HierarchyName;
-        Name = name;
-        HierarchyDetail.Update(Name.Value.ToPluralize());
+        Name = name ?? throw new ArgumentNullException(nameof(name)); ;
+        HierarchyDetail.Update(Name);
         UpdateRootChildrenRecursive(oldHierarchyName, ChildCategories);
     }
 
@@ -78,7 +88,9 @@ public sealed class Category : BaseTimestampEntity
         foreach (var child in childCategories)
         {
             if (Name == child.Name)
+            {
                 throw new BadRequestException($"{nameof(Category)} with {nameof(Name)} equals '{Name}' exist in hierarchy.");
+            }
 
             child.HierarchyDetail.Update(child.HierarchyDetail.HierarchyName.ReplaceFirst(oldRootHierarchyName, HierarchyDetail.HierarchyName));
             UpdateRootChildrenRecursive(oldRootHierarchyName, child.ChildCategories);
@@ -87,6 +99,8 @@ public sealed class Category : BaseTimestampEntity
 
     public void UpdateChildrenCategory(CategoryName name)
     {
+        ArgumentNullException.ThrowIfNull(name);
+
         HierarchyDetail.Update(HierarchyDetail.HierarchyName.ReplaceLast(Name, name));
 
         if (name.Value.Equals(Name.Value, StringComparison.CurrentCultureIgnoreCase))
@@ -108,7 +122,7 @@ public sealed class HierarchyDetail
     public HierarchyDetail(string categoryName, Guid rootCategoryId)
     {
         Level = 0;
-        HierarchyName = categoryName.ToPluralize();
+        HierarchyName = categoryName;
         EncodedHierarchyName = HierarchyName.ToEncodedName();
         RootCategoryId = rootCategoryId;
     }

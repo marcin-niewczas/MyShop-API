@@ -78,30 +78,30 @@ internal static class MainDevDbInitData
 
     public static IReadOnlyCollection<Category> GetCategories()
     {
-        var womenCategory = new Category("Women");
-        var womensClothesCategory = new Category("Clothes", womenCategory);
+        var womensCategory = new Category("Womens");
+        var womensClothesCategory = new Category("Clothes", womensCategory);
         var womensTShirtsCategory = new Category("T-Shirts", womensClothesCategory);
 
-        var menCategory = new Category("Men");
-        var mensClothesCategory = new Category("Clothes", menCategory);
+        var mensCategory = new Category("Mens");
+        var mensClothesCategory = new Category("Clothes", mensCategory);
         var mensTShirtsCategory = new Category("T-Shirts", mensClothesCategory);
 
-        var electronicCategory = new Category("Electronic");
-        var electronicsPhonesCategory = new Category("Phones", electronicCategory);
+        var electronicsCategory = new Category("Electronics");
+        var electronicsPhonesCategory = new Category("Phones", electronicsCategory);
         var electronicsSmartphonesCategory = new Category("Smartphones", electronicsPhonesCategory);
-        var electronicsWearablesCategory = new Category("Wearables", electronicCategory);
+        var electronicsWearablesCategory = new Category("Wearables", electronicsCategory);
         var electronicsSmartbandsCategory = new Category("Smartbands", electronicsWearablesCategory);
         var electronicsSmartwatchesCategory = new Category("Smartwatches", electronicsWearablesCategory);
 
         return new Category[]
         {
-            womenCategory,
+            womensCategory,
             womensClothesCategory,
             womensTShirtsCategory,
-            menCategory,
+            mensCategory,
             mensClothesCategory,
             mensTShirtsCategory,
-            electronicCategory,
+            electronicsCategory,
             electronicsPhonesCategory,
             electronicsSmartphonesCategory,
             electronicsWearablesCategory,
