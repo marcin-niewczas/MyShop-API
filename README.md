@@ -9,6 +9,7 @@
     - [Built with](#built-with)
 2. [Related Projects](#related-projects)
 3. [Getting Started](#getting-started)
+4. [Launch myShop Projects](#launch-myshop-projects)
 
 ## About This Project
 The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit of Work and Event Driven Architecture Patterns.
@@ -77,3 +78,82 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)**
 
 ## Getting Started
+> [!Important]
+> For fully functionality, the **myShop API** project must have **[related projects](#related-projects)** running.
+> 
+> Full instruction for starting **myShop** projects is **[here](#launch-myshop-projects)**.
+1. Clone repository
+   ```sh
+   git clone https://github.com/marcin-niewczas/MyShop-API.git  
+   ```
+2. Database
+   - Windows
+     - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
+   - Mac OS/Linux
+     - Go to `./src/MyShop.API/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`
+     - Run **Docker App**
+     - In root directory of repository run
+       ```sh
+       cd ../../
+       docker-compose up -d
+       ```
+3. In root directory of repository run
+   ```sh
+   dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
+   ```
+## Launch myShop Projects
+### 1. Clone repositories
+   ```sh
+   git clone https://github.com/marcin-niewczas/MyShop-API.git
+   git clone https://github.com/marcin-niewczas/MyShop-Angular-Client.git
+   git clone https://github.com/marcin-niewczas/MyShop-Pay.git
+   ```
+
+### 2. myShop API
+1. Go to root folder of **myShop API** repository
+   ```sh
+   cd MyShop-API
+   ```
+2. Database
+   - Windows
+     - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
+   - Mac OS/Linux
+     - Go to `./src/MyShop.API/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`
+     - Run **Docker App**
+     - In root directory of repository run
+       ```sh
+       cd ../../
+       docker-compose up -d
+       ```
+3. In root directory of repository run
+   ```sh
+   dotnet run --project ./src/MyShop.API/MyShop.API.csproj --launch-profile MyShop.HTTPS.Development
+   ```
+### 3. myShop Angular Client
+1. Go to root folder of **myShop Angular Client** repository
+   ```sh
+   cd ../MyShop-Angular-Client
+   ```
+2. In root folder of repository install NPM packages
+   ```sh
+   npm install
+   ```
+3. Run application
+   ```sh
+   ng serve
+   ```
+
+### 4. myShop Pay
+1. Go to root folder of **myShop Pay** repository
+   ```sh
+   cd ../MyShop-Pay
+   ```
+3. Database
+   - Windows
+     - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
+   - Mac OS/Linux
+     - Go to `./MyShopPay/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`     
+4. In root directory of repository run
+   ```sh
+   dotnet run --project ./MyShopPay/MyShopPay.csproj --launch-profile https
+   ```
