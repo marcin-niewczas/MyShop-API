@@ -30,7 +30,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
       - SuperAdmin
   - Message broker built with Channel
     - CRON Jobs,
-    - Async Tasks (e.g. Payment Processing with **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)** )
+    - Async Background Tasks (e.g. Payment Processing with **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)** )
 - **E-Commerce**
   - Customized Home Page
   - Products List
