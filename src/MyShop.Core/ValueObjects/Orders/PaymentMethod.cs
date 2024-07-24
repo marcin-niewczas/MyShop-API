@@ -16,7 +16,7 @@ public sealed record PaymentMethod : IAllowedValues
 
     public const string CashOnDelivery = "Cash On Delivery";
     public const string PayPal = nameof(PayPal);
-    public const string MyShopPay = "MyShop Pay";
+    public const string MyShopPay = "myShop Pay";
     public const string GooglePay = "Google Pay";
     public const string ApplePay = "Apple Pay";
 

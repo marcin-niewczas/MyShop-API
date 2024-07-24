@@ -9,7 +9,7 @@ using MyShop.Infrastructure.Notifications.Senders.Interfaces;
 namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class AuthEmailHasBeenChangedEventHandler(
     IUnitOfWork unitOfWork,
-    ISecurityNotificationsSender securityNotificationsSender
+    ICommonNotificationsSender commonNotificationsSender
     ) : IEventHandler<AuthEmailHasBeenChanged>
 {
     public async Task HandleAsync(AuthEmailHasBeenChanged @event, CancellationToken cancellationToken = default)
@@ -24,7 +24,7 @@ internal sealed class AuthEmailHasBeenChangedEventHandler(
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await securityNotificationsSender.SendAsync(
+        await commonNotificationsSender.SendAsync(
             @event.RegisteredUserId,
             notification,
             cancellationToken: cancellationToken

@@ -1,7 +1,7 @@
 ﻿using MyShop.Core.Models.Notifications;
 
 namespace MyShop.Infrastructure.Notifications.Senders.Interfaces;
-internal interface ISecurityNotificationsSender
+internal interface ICommonNotificationsSender
 {
     Task SendAsync(
         Guid registeredUserId,

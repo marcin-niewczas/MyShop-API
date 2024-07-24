@@ -4,10 +4,10 @@ using MyShop.Application.Hubs.Shared.Interfaces;
 using MyShop.Application.Mappings;
 using MyShop.Core.Models.Notifications;
 
-namespace MyShop.Infrastructure.Notifications.Securities;
-internal sealed class HubSecurityNotification(
+namespace MyShop.Infrastructure.Notifications.Commons;
+internal sealed class HubCommonNotification(
     IHubContext<NotificationsHub, INotificationsHub> notificationHub
-    ) : ISecurityNotification
+    ) : ICommonNotification
 {
     public NotificationSenderType NotificationSenderType => NotificationSenderType.Hub;
 

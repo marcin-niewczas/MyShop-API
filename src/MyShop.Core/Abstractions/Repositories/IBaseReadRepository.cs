@@ -89,6 +89,12 @@ public interface IBaseReadRepository<TEntity> where TEntity : class, IEntity
         CancellationToken cancellationToken = default
         );
 
+    Task<IReadOnlyCollection<TResult>> GetByPredicateAsync<TResult>(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TResult>> selector,
+        CancellationToken cancellationToken = default
+        );
+
     Task<IReadOnlyCollection<TEntity>> GetByPredicateAsync(
         Expression<Func<TEntity, bool>> predicate,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,

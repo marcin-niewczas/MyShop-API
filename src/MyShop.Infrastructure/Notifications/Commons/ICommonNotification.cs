@@ -1,7 +1,7 @@
 ﻿using MyShop.Core.Models.Notifications;
 
-namespace MyShop.Infrastructure.Notifications.Securities;
-internal interface ISecurityNotification
+namespace MyShop.Infrastructure.Notifications.Commons;
+internal interface ICommonNotification
 {
     NotificationSenderType NotificationSenderType { get; }
     Task NotifyAsync(

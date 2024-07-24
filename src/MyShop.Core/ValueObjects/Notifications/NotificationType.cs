@@ -8,15 +8,16 @@ public sealed record NotificationType : IAllowedValues
         = new string[]
         {
             Order,
-            Security,
-            SalesEvent,
-            FavoriteProductSale,
+            ProductIsAvailable,
+            ProductPriceReduced,
+            Security,                   
         }.AsReadOnly();
 
     public const string Order = nameof(Order);
+    public const string ProductIsAvailable = nameof(ProductIsAvailable);
+    public const string ProductPriceReduced = nameof(ProductPriceReduced);
     public const string Security = nameof(Security);
-    public const string SalesEvent = nameof(SalesEvent);
-    public const string FavoriteProductSale = nameof(FavoriteProductSale);
+    
 
     public string Value { get; }
 

@@ -33,8 +33,8 @@ internal sealed class ProductReviewRespository(
         {
             (GetPagedProductReviewsSortBy.Rate, SortDirection.Ascendant) => query.OrderBy(e => e.Rate),
             (GetPagedProductReviewsSortBy.Rate, SortDirection.Descendant) => query.OrderByDescending(e => e.Rate),
-            (GetPagedProductReviewsSortBy.Newest, SortDirection.Ascendant) => query.OrderBy(e => e.CreatedAt).ThenBy(e => e.UpdatedAt),
-            _ => query.OrderByDescending(e => e.CreatedAt).ThenByDescending(e => e.UpdatedAt),
+            (GetPagedProductReviewsSortBy.Newest, SortDirection.Ascendant) => query.OrderBy(e => e.UpdatedAt ?? e.CreatedAt),
+            _ => query.OrderByDescending(e => e.UpdatedAt ?? e.CreatedAt),
         };
 
         return query.ToPagedResultAsync(pageNumber, pageSize, cancellationToken: cancellationToken);

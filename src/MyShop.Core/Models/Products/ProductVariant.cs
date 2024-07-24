@@ -392,4 +392,26 @@ public sealed class ProductVariant : BaseTimestampEntity
 
         EncodedName = EncodedName.ReplaceFirst(encodedOldValue, encodedNewValue);
     }
+
+    public string GetProductVariantFullName()
+    {
+        var mainDetailOptionValue = Product
+            .ProductDetailOptionValues
+            .First(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main).Value;
+
+        var variantOptionsValuesLabel = string.Join(
+            "/",
+            Product
+            .ProductProductVariantOptions
+            .OrderBy(o => o.Position.Value)
+            .Join(
+                ProductVariantOptionValues,
+                x => x.ProductVariantOptionId,
+                x => x.ProductOptionId,
+                (_, v) => v.Value
+                )
+            );
+
+        return $"{mainDetailOptionValue} {Product.Name} {variantOptionsValuesLabel}";
+    }
 }

@@ -8,7 +8,7 @@ using MyShop.Infrastructure.Notifications.Senders.Interfaces;
 namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class AuthPasswordHasBeenChangedEventHandler(
     IUnitOfWork unitOfWork,
-    ISecurityNotificationsSender securityNotificationsSender
+    ICommonNotificationsSender commonNotificationsSender
     ) : IEventHandler<AuthPasswordHasBeenChanged>
 {
     public async Task HandleAsync(AuthPasswordHasBeenChanged @event, CancellationToken cancellationToken = default)
@@ -22,7 +22,7 @@ internal sealed class AuthPasswordHasBeenChangedEventHandler(
         await unitOfWork.AddAsync(notification, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await securityNotificationsSender.SendAsync(
+        await commonNotificationsSender.SendAsync(
             @event.RegisteredUserId,
             notification,
             cancellationToken: cancellationToken

@@ -158,6 +158,17 @@ internal abstract class BaseGenericRepository<TEntity>
             .ToArrayAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyCollection<TResult>> GetByPredicateAsync<TResult>(
+        Expression<Func<TEntity, bool>> predicate,
+        Expression<Func<TEntity, TResult>> selector,
+        CancellationToken cancellationToken = default
+        ) => await _dbSet
+                .Where(predicate)
+                .AsNoTracking()
+                .Select(selector)
+                .ToArrayAsync(cancellationToken);
+
+
     public async Task<IReadOnlyCollection<TEntity>> GetByPredicateAsync(
         Expression<Func<TEntity, bool>> predicate,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
