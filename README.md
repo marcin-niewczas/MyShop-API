@@ -1,15 +1,17 @@
 <div align="center"> 
-  <h3>myShop API</h3>
-  <h6>E-Commerce | Management Panel<h6>
+  <h1>myShop API</h1>
 </div>
+<br />
+<br />
 
 ## Table of Contents
-1. [About This Project](#about-this-project)
-    - [Features](#features)
-    - [Built with](#built-with)
-2. [Related Projects](#related-projects)
-3. [Getting Started](#getting-started)
-4. [Launch myShop Projects](#launch-myshop-projects)
+1. **[About This Project](#about-this-project)**
+    - **[Features](#features)**
+    - **[Built with](#built-with)**
+2. **[Related Projects](#related-projects)**
+3. **[Getting Started](#getting-started)**
+4. **[Launch myShop Projects](#launch-myshop-projects)**
+5. **[License](#license)**
 
 ## About This Project
 The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit of Work and Event Driven Architecture Patterns.
@@ -157,3 +159,5 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```sh
    dotnet run --project ./MyShopPay/MyShopPay.csproj --launch-profile https
    ```
+## License
+Distributed under the **MIT Licence**. See **[LICENSE](./LICENSE)** for more information.
