@@ -5,7 +5,7 @@
 <br />
 
 ## Table of Contents
-1. **[About This Project](#about-this-project)**
+1. **[About The Project](#about-this-project)**
     - **[Features](#features)**
     - **[Built with](#built-with)**
 2. **[Related Projects](#related-projects)**
