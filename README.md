@@ -74,6 +74,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * ASP.NET Core SignalR
 * Swagger
 * Quartz.NET
+* Humanizer
 
 ## Related Projects
 * **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
