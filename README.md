@@ -161,4 +161,4 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    dotnet run --project ./MyShopPay/MyShopPay.csproj --launch-profile https
    ```
 ## License
-Distributed under the **MIT Licence**. See **[LICENSE](./LICENSE)** for more information.
+Distributed under the **MIT License**. See **[LICENSE](./LICENSE)** for more information.
