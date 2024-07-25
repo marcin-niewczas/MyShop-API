@@ -14,7 +14,7 @@
 5. **[License](#license)**
 
 ## About The Project
-The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit of Work and Event Driven Architecture Patterns.
+The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit Of Work and Event Driven Architecture Patterns.
 
 ### Clients
 - **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client) ( [Screenshots](https://github.com/marcin-niewczas/MyShop-Angular-Client/blob/main/SCREENSHOTS.md)** )
