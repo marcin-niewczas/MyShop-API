@@ -64,7 +64,6 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 - **Authenticates**
   - JWT Authenticates with Refresh Tokens
   - Possibility of sessions on various devices
-  - Auth
   - Sign In
   - Sign Up
 ### Built with
