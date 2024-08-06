@@ -76,6 +76,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * Swagger
 * Quartz.NET
 * Humanizer
+* Scrutor
 
 ## Related Projects
 * **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
