@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Dtos.Account;
-using MyShop.Core.Dtos.Auth;
-using MyShop.Core.Dtos.ECommerce;
 using MyShop.Core.Dtos.ManagementPanel;
-using MyShop.Core.Dtos.Shared;
 using MyShop.Core.HelperModels;
 using MyShop.Core.Models.Orders;
 using MyShop.Core.Models.Users;
@@ -20,106 +17,39 @@ internal sealed class OrderRepository(
     MainDbContext dbContext
     ) : BaseGenericRepository<Order>(dbContext), IOrderRepository
 {
-    public Task<OrderDetailsMpDto?> GetOrderDetailsMpAsync(
+    public Task<Order?> GetOrderDetailsMpAsync(
         Guid id,
         CancellationToken cancellationToken = default
         )
     {
+
         return _dbSet
-            .Where(e => e.Id == id)
-            .Select(e => new OrderDetailsMpDto
-            {
-                Id = e.Id,
-                Email = e.Email,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                PhoneNumber = e.PhoneNumber,
-                StreetName = e.StreetName,
-                BuildingNumber = e.BuildingNumber,
-                ApartmentNumber = e.ApartmentNumber,
-                City = e.City,
-                ZipCode = e.ZipCode,
-                Country = e.Country,
-                TotalPrice = e.OrderProducts.Sum(op => op.Quantity * op.Price),
-                Status = e.Status,
-                DeliveryMethod = e.DeliveryMethod,
-                PaymentMethod = e.PaymentMethod,
-                RedirectPaymentUri = e.RedirectPaymentUri,
-                CreatedAt = e.CreatedAt,
-                UpdatedAt = e.UpdatedAt,
-
-                User = e.User.Role.HasCustomerPermission()
-                    ? new CustomerMeDto
-                    {
-                        Id = e.User.Id,
-                        FirstName = ((RegisteredUser)e.User).FirstName,
-                        LastName = ((RegisteredUser)e.User).LastName,
-                        PhoneNumber = ((RegisteredUser)e.User).PhoneNumber,
-                        Email = ((RegisteredUser)e.User).Email,
-                        UserRole = ((RegisteredUser)e.User).Role,
-                        Gender = ((RegisteredUser)e.User).Gender,
-                        DateOfBirth = ((RegisteredUser)e.User).DateOfBirth,
-                        PhotoUrl = ((RegisteredUser)e.User).Photo != null
-                            ? ((RegisteredUser)e.User).Photo!.Uri.ToString()
-                            : null
-                    }
-                    : new UserDto
-                    {
-                        Id = e.UserId,
-                        UserRole = e.User.Role
-                    },
-
-                OrderProducts = e.OrderProducts.Select(op => new OrderProductMpDto
-                {
-                    Id = op.Id,
-                    ProductVariantId = op.ProductVariantId,
-                    ProductId = op.ProductVariant.ProductId,
-                    Name = string.Concat(
-                            op.ProductVariant
-                            .Product
-                            .ProductDetailOptionValues
-                            .First(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main)
-                            .Value,
-                            " ",
-                            op.ProductVariant.Product.Name
-                            ),
-                    CategoryHierarchyName = op.ProductVariant.Product.Category.HierarchyDetail.HierarchyName,
-                    EncodedName = op.ProductVariant.EncodedName,
-                    MainPhoto = op.ProductVariant
-                            .PhotoItems
-                            .Where(p => p.Position == 0)
-                            .Select(p => new PhotoDto(p.ProductVariantPhoto.Uri, p.ProductVariantPhoto.Alt))
-                            .FirstOrDefault(),
-                    OrderId = op.OrderId,
-                    Price = op.Price,
-                    Quantity = op.Quantity,
-                    PriceAll = op.Price * op.Quantity,
-                    VariantOptionNameValues = op.ProductVariant
-                            .Product
-                            .ProductProductVariantOptions
-                            .OrderBy(o => o.Position)
-                            .Join(op.ProductVariant.ProductVariantOptionValues,
-                                  k => k.ProductVariantOptionId,
-                                  k => k.ProductOptionId,
-                                  (_, v) => new OptionNameValue(v.ProductVariantOption.Name, v.Value))
-                            .ToArray()
-
-                }).ToArray(),
-
-                OrderStatusHistories = e.OrderStatusHistories
-                    .AsQueryable()
-                    .OrderBy(o => o.CreatedAt)
-                    .Select(h => new OrderStatusHistoryDto
-                    {
-                        Id = h.Id,
-                        CreatedAt = h.CreatedAt,
-                        UpdatedAt = h.UpdatedAt,
-                        Status = h.Status,
-                    }).ToArray(),
-            })
+            .Include(i => i.OrderStatusHistories.OrderBy(o => o.CreatedAt))
+            .Include(i => i.User)
+            .ThenInclude(i => ((RegisteredUser)i).Photo)
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.ProductDetailOptionValues.Where(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main))
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.ProductProductVariantOptions.OrderBy(o => o.Position))
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.Category)
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.PhotoItems.OrderBy(o => o.Position).Take(1))
+            .ThenInclude(i => i.ProductVariantPhoto)
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.ProductVariantOptionValues)
+            .ThenInclude(i => i.ProductVariantOption)
             .AsSplitQuery()
             .AsNoTracking()
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
 
@@ -227,87 +157,37 @@ internal sealed class OrderRepository(
             );
     }
 
-    public Task<OrderWithProductsEcDto?> GetFullOrderDataEcAsync(
-    Guid orderId,
-    Guid userId,
-    CancellationToken cancellationToken = default
-    )
+    public Task<Order?> GetFullOrderDataEcAsync(
+        Guid orderId,
+        Guid userId,
+        CancellationToken cancellationToken = default
+        )
     {
-        var query = _dbSet
-            .Where(e => e.Id == orderId && e.UserId == userId)
-            .Select(e => new OrderWithProductsEcDto
-            {
-                Id = e.Id,
-                Email = e.Email,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                PhoneNumber = e.PhoneNumber,
-                StreetName = e.StreetName,
-                BuildingNumber = e.BuildingNumber,
-                ApartmentNumber = e.ApartmentNumber,
-                City = e.City,
-                ZipCode = e.ZipCode,
-                Country = e.Country,
-                TotalPrice = e.OrderProducts.Sum(op => op.Quantity * op.Price),
-                Status = e.Status,
-                DeliveryMethod = e.DeliveryMethod,
-                PaymentMethod = e.PaymentMethod,
-                RedirectPaymentUri = e.RedirectPaymentUri,
-                CreatedAt = e.CreatedAt,
-                UpdatedAt = e.UpdatedAt,
-                OrderProducts = e.OrderProducts.Select(op => new OrderProductEcDto
-                {
-                    Name = string.Concat(
-                        op.ProductVariant
-                        .Product
-                        .ProductDetailOptionValues
-                        .First(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main)
-                        .Value,
-                        " ",
-                        op.ProductVariant.Product.Name
-                        ),
-                    CategoryHierarchyName = op.ProductVariant.Product.Category.HierarchyDetail.HierarchyName,
-                    EncodedName = op.ProductVariant.EncodedName,
-                    MainPhoto = op.ProductVariant
-                        .PhotoItems
-                        .Where(p => p.Position == 0)
-                        .Select(p => new PhotoDto(p.ProductVariantPhoto.Uri, p.ProductVariantPhoto.Alt))
-                        .FirstOrDefault(),
-                    OrderId = op.OrderId,
-                    Price = op.Price,
-                    Quantity = op.Quantity,
-                    PriceAll = op.Price * op.Quantity,
-                    VariantOptionNameValues = op.ProductVariant
-                        .Product
-                        .ProductProductVariantOptions
-                        .OrderBy(o => o.Position)
-                        .Join(op.ProductVariant.ProductVariantOptionValues,
-                              k => k.ProductVariantOptionId,
-                              k => k.ProductOptionId,
-                              (_, v) => new OptionNameValue(v.ProductVariantOption.Name, v.Value))
-                        .ToArray()
-
-
-                }).ToArray(),
-                OrderStatusHistories = e.OrderStatusHistories
-                    .AsQueryable()
-                    .OrderBy(o => o.CreatedAt)
-                    .Select(h => new OrderStatusHistoryDto
-                    {
-                        Id = h.Id,
-                        CreatedAt = h.CreatedAt,
-                        UpdatedAt = h.UpdatedAt,
-                        Status = h.Status,
-                    }).ToArray(),
-
-            });
-
-
-
-        return query
-                .AsSplitQuery()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(cancellationToken);
+        return _dbSet
+            .Include(i => i.OrderStatusHistories.OrderBy(o => o.CreatedAt))
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.ProductDetailOptionValues.Where(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main))
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.ProductProductVariantOptions.OrderBy(o => o.Position))
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.Category)
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.PhotoItems.OrderBy(o => o.Position).Take(1))
+            .ThenInclude(i => i.ProductVariantPhoto)
+            .Include(i => i.OrderProducts)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.ProductVariantOptionValues)
+            .ThenInclude(i => i.ProductVariantOption)
+            .AsSplitQuery()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == orderId && e.UserId == userId, cancellationToken);
     }
 
     public Task<PagedResult<OrderAcDto>> GetPagedOrdersAcAsync(

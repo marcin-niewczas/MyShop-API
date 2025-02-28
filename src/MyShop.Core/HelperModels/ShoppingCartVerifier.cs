@@ -3,35 +3,33 @@
 namespace MyShop.Core.HelperModels;
 public sealed record ShoppingCartVerifier
 {
-    public required ShoppingCart ShoppingCart { get; init; }
-    public IReadOnlyCollection<ShoppingCartItemDetail> ShoppingCartItemToVerifies => _shoppingCartItemToVerifies;
-    public List<ShoppingCartItemDetail> _shoppingCartItemToVerifies;
+    public ShoppingCart ShoppingCart { get; private set; }
 
-    public ShoppingCartVerifier(List<ShoppingCartItemDetail> shoppingCartItemToVerifies)
-       => _shoppingCartItemToVerifies = shoppingCartItemToVerifies;
+    public ShoppingCartVerifier(ShoppingCart shoppingCart)
+       => ShoppingCart = shoppingCart;
 
 
-    public IReadOnlyDictionary<Guid, Changed<int, ShoppingCartItemDetail>> Verify()
+    public IReadOnlyDictionary<Guid, Changed<int, ShoppingCartItem>> Verify()
     {
-        var dictionary = new Dictionary<Guid, Changed<int, ShoppingCartItemDetail>>();
+        var dictionary = new Dictionary<Guid, Changed<int, ShoppingCartItem>>();
 
-        List<ShoppingCartItemDetail> toRemoved = [];
+        List<ShoppingCartItem> toRemoved = [];
 
-        foreach (var item in _shoppingCartItemToVerifies)
+        foreach (var item in ShoppingCart.ShoppingCartItems)
         {
             if (item.ProductVariant.Quantity <= 0)
             {
                 toRemoved.Add(item);
-                dictionary[item.ShoppingCartItem.Id] = new(item.ShoppingCartItem.Quantity, 0, item);
+                dictionary[item.Id] = new(item.Quantity, 0, item);
 
                 continue;
             }
 
-            if (item.ProductVariant.Quantity < item.ShoppingCartItem.Quantity)
+            if (item.ProductVariant.Quantity < item.Quantity)
             {
-                var previousQuantity = item.ShoppingCartItem.Quantity;
-                item.ShoppingCartItem.Update(item.ProductVariant.Quantity);
-                dictionary[item.ShoppingCartItem.Id] = new(previousQuantity, item.ProductVariant.Quantity, item);
+                var previousQuantity = item.Quantity;
+                item.Update(item.ProductVariant.Quantity);
+                dictionary[item.Id] = new(previousQuantity, item.ProductVariant.Quantity, item);
 
                 continue;
             }
@@ -39,8 +37,7 @@ public sealed record ShoppingCartVerifier
 
         foreach (var item in toRemoved)
         {
-            _shoppingCartItemToVerifies.Remove(item);
-            ShoppingCart.RemoveShoppingCartItem(item.ShoppingCartItem);
+            ShoppingCart.RemoveShoppingCartItem(item);
         }
 
         return dictionary.AsReadOnly();

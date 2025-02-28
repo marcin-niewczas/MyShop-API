@@ -1,4 +1,5 @@
-﻿using MyShop.Application.Queries.ManagementPanel.Orders;
+﻿using MyShop.Application.Mappings;
+using MyShop.Application.Queries.ManagementPanel.Orders;
 using MyShop.Application.Responses;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Dtos.ManagementPanel;
@@ -20,6 +21,6 @@ internal sealed class GetOrderDetailsMpQueryHandler(
             cancellationToken
             ) ?? throw new NotFoundException(nameof(Order), query.Id);
 
-        return new(result);
+        return new(result.ToOrderDetailsMpDto());
     }
 }

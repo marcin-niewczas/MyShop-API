@@ -1,4 +1,5 @@
 ﻿using MyShop.Core.Abstractions;
+using MyShop.Core.HelperModels;
 using MyShop.Core.Models.BaseEntities;
 using MyShop.Core.ValueObjects.Products;
 
@@ -32,6 +33,9 @@ public sealed record ProductDataDto
     public required string MainDetailOptionValue { get; init; }
     public required string MainVariantOptionValue { get; init; }
     public required bool HasMultipleVariants { get; init; }
-    public required string VariantLabel { get; init; }
+    public string VariantLabel => VariantLabelPositions is null 
+        ? string.Empty 
+        : string.Join('/', VariantLabelPositions.OrderBy(o => o.Position).Select(v => v.Value));
+    public required List<ValuePosition<string>>? VariantLabelPositions { get; init; }
     public required PhotoDto? MainPhoto { get; init; }
 }

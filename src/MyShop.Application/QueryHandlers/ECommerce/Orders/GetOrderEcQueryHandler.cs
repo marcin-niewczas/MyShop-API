@@ -1,4 +1,5 @@
 ﻿using MyShop.Application.Abstractions;
+using MyShop.Application.Mappings;
 using MyShop.Application.Queries.ECommerce.Orders;
 using MyShop.Application.Responses;
 using MyShop.Core.Abstractions.Repositories;
@@ -25,6 +26,6 @@ internal sealed class GetOrderEcQueryHandler(
             cancellationToken: cancellationToken
             ) ?? throw new NotFoundException(nameof(Order), query.Id);
 
-        return new(orderDto);
+        return new(orderDto.ToOrderWithProductsEcDto());
     }
 }

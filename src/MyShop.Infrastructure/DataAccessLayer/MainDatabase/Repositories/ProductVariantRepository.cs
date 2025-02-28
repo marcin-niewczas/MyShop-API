@@ -268,17 +268,16 @@ internal sealed class ProductVariantRepository(
                     MainVariantOptionValue = pv.ProductVariantOptionValues
                         .First(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Main).Value,
                     HasMultipleVariants = pv.ProductVariantOptionValues.Count > 2,
-                    VariantLabel = pv.ProductVariantOptionValues.Count <= 1
-                        ? string.Empty
-                        : string.Join("/", pv.Product.ProductProductVariantOptions
-                            .AsQueryable()
+                    VariantLabelPositions = pv.ProductVariantOptionValues.Count <= 1
+                        ? null
+                        : pv.Product.ProductProductVariantOptions
                             .Where(pp => pp.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Additional)
-                            .OrderBy(o => o.Position)
                             .Join(
-                                pv.ProductVariantOptionValues.AsQueryable(),
+                                pv.ProductVariantOptionValues,
                                 k => k.ProductVariantOptionId,
                                 k => k.ProductOptionId,
-                                (_, v) => v.Value.ToString()))
+                                (ppvo, v) => new ValuePosition<string>(v.Value.ToString(), ppvo.Position)).ToList()
+
                 }).First(),
 
                 ProductReviewsCount = g.First().Product.ProductReviews.Count,
@@ -437,46 +436,35 @@ internal sealed class ProductVariantRepository(
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
+
         var currentVariants = await _dbSet
+            .Include(i => i.ProductVariantOptionValues)
+            .ThenInclude(i => i.ProductVariantOption)
+            .Include(i => i.PhotoItems.OrderBy(p => p.Position))
+            .ThenInclude(i => i.ProductVariantPhoto)
             .Where(v => v.ProductId == product.Id && v.EncodedName == encodedName)
-            .SelectMany(v => v.ProductVariantOptionValues, (pv, v) => new
-            {
-                pv.Id,
-                pv.Price,
-                pv.Quantity,
-                pv.SortPriority,
-                v.Position,
-                v.ProductVariantOption.Name,
-                v.ProductOptionId,
-                v.Value,
-                v.ProductVariantOption.ProductOptionSubtype,
-                Photos = pv.PhotoItems
-                .AsQueryable()
-                .OrderBy(o => o.Position)
-                .Select(p => new PhotoDto(p.ProductVariantPhoto.Uri, p.ProductVariantPhoto.Alt))
-                .ToArray()
-            })
-            .GroupBy(x => new { x.Id, x.Quantity, x.Price, x.SortPriority })
-            .OrderBy(o => o.Key.SortPriority)
-            .Select(x => new CurrentVariantByMainEcDto(
-                x.Key.Id,
-                x.Key.Price,
-                x.Key.Quantity.IsLastItemsInStock(),
-                x.Where(v => v.ProductOptionSubtype == ProductOptionSubtype.Main)
-                    .Select(v => new OptionNameValue(v.Name, v.Value))
-                    .First(),
-                x.Where(v => v.ProductOptionSubtype == ProductOptionSubtype.Additional)
-                    .Select(v => new OptionNameValue(v.Name, v.Value))
-                    .ToArray(),
-                x.First().Photos
-                ))
+            .OrderBy(o => o.SortPriority)
             .AsNoTracking()
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
 
         if (currentVariants.IsNullOrEmpty())
         {
             return null;
         }
+
+        var currentVariantsDtos = currentVariants.Select(x => new CurrentVariantByMainEcDto(
+            x.Id,
+            x.Price,
+            x.Quantity.IsLastItemsInStock(),
+            x.ProductVariantOptionValues.Where(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Main)
+                    .Select(v => new OptionNameValue(v.ProductVariantOption.Name, v.Value))
+                    .First(),
+                x.ProductVariantOptionValues.Where(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Additional)
+                    .Select(v => new OptionNameValue(v.ProductVariantOption.Name, v.Value))
+                    .ToArray(),
+            x.PhotoItems.Select(p => new PhotoDto(p.ProductVariantPhoto.Uri, p.ProductVariantPhoto.Alt)).ToArray()
+            )).ToArray();
 
         var otherVariants = await _dbContext
         .Products
@@ -514,7 +502,7 @@ internal sealed class ProductVariantRepository(
             availableVariants,
             minPrice,
             maxPrice,
-            currentVariants,
+            currentVariantsDtos,
             otherVariants,
             encodedName
             );

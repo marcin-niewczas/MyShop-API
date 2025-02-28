@@ -30,6 +30,6 @@ internal sealed class VerifyShoppingCartEcCommandHandler(
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        return new(shoppingCartVerifier.ToShoppingCartDetailEcDto(changed));
+        return new(shoppingCartVerifier.ShoppingCart.ToShoppingCartDetailEcDto(changed));
     }
 }

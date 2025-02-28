@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyShop.Core.Abstractions.Repositories;
+using MyShop.Core.Exceptions;
 using MyShop.Core.HelperModels;
+using MyShop.Core.Models.BaseEntities;
 using MyShop.Core.Models.ShoppingCarts;
+using MyShop.Core.Models.Users;
 using MyShop.Core.ValueObjects.ProductOptions;
 
 namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Repositories;
@@ -37,39 +40,29 @@ internal sealed class ShoppingCartRepository(
         CancellationToken cancellationToken = default
         )
     {
-
-        var shoppingCart = _dbSet
-            .Where(e => e.UserId == userId)
-            .Select(x => new ShoppingCartVerifier(
-               x.ShoppingCartItems.Select(i => new ShoppingCartItemDetail(
-                    i.ProductVariant.ProductVariantOptionValues.AsQueryable().Include(i => i.ProductVariantOption).First(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Main),
-                    i.ProductVariant.Photos.FirstOrDefault(p => p.ProductVariantPhotoItems.Any(i => i.Position == 0))
-                    )
-
-               {
-                   ShoppingCartItem = i,
-                   ProductVariant = i.ProductVariant,
-                   AdditionalProductVariantOptions = i.ProductVariant.Product.ProductProductVariantOptions
-                    .Where(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Additional)
-                    .OrderBy(o => o.Position)
-                    .Join(
-                        i.ProductVariant.ProductVariantOptionValues,
-                        k => k.ProductVariantOptionId,
-                        k => k.ProductOptionId,
-                        (_, v) => new OptionNameValue(v.ProductVariantOption.Name, v.Value)
-                        )
-                    .ToList(),
-                   ModelName = i.ProductVariant.Product.Name,
-                   MainDetailOptionValue = i.ProductVariant
-                      .Product
-                      .ProductDetailOptionValues
-                      .First(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main).Value
-               }).ToList()
-            )
-            { ShoppingCart = x });
-
-        return await shoppingCart
+        var shoppingCart = await _dbSet
+            .Include(i => i.ShoppingCartItems)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.ProductProductVariantOptions)
+            .Include(i => i.ShoppingCartItems)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.ProductVariantOptionValues)
+            .ThenInclude(i => i.ProductVariantOption)
+            .Include(i => i.ShoppingCartItems)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.Product)
+            .ThenInclude(i => i.ProductDetailOptionValues.Where(v => v.ProductDetailOption.ProductOptionSubtype == ProductOptionSubtype.Main))
+            .Include(i => i.ShoppingCartItems)
+            .ThenInclude(i => i.ProductVariant)
+            .ThenInclude(i => i.PhotoItems.OrderBy(o => o.Position).Take(1))
+            .ThenInclude(i => i.ProductVariantPhoto)
             .AsSplitQuery()
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(e => e.UserId == userId, cancellationToken)
+                ?? throw new InvalidDataInDatabaseException(
+                    $"The {nameof(ShoppingCart)} for {nameof(User)} with {nameof(IEntity.Id)} equal '{userId}' not exist."
+                    );
+
+        return new(shoppingCart);
     }
 }

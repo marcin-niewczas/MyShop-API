@@ -73,17 +73,15 @@ internal sealed class FavoriteRepository(
                     MainVariantOptionValue = pv.ProductVariantOptionValues
                         .First(v => v.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Main).Value,
                     HasMultipleVariants = pv.ProductVariantOptionValues.Count > 1,
-                    VariantLabel = pv.ProductVariantOptionValues.Count <= 1
-                        ? string.Empty
-                        : string.Join("/", pv.Product.ProductProductVariantOptions
-                            .AsQueryable()
+                    VariantLabelPositions = pv.ProductVariantOptionValues.Count <= 1
+                        ? null
+                        : pv.Product.ProductProductVariantOptions
                             .Where(pp => pp.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Additional)
-                            .OrderBy(o => o.Position)
                             .Join(
-                                pv.ProductVariantOptionValues.AsQueryable(),
+                                pv.ProductVariantOptionValues,
                                 k => k.ProductVariantOptionId,
                                 k => k.ProductOptionId,
-                                (_, v) => v.Value))
+                                (_, v) => new ValuePosition<string>(v.Value.ToString(), _.Position)).ToList()
                 }).First(),
 
                 ProductReviewsCount = e.Variants.First().Product.ProductReviews.Count,
