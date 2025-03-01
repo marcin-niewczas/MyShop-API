@@ -31,7 +31,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
       - Manager
       - Admin
       - SuperAdmin
-  - Message broker built with Channel
+  - Message broker Channel or RabbitMQ
     - CRON Jobs,
     - Async Background Tasks (e.g. Payment Processing with **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)** )
 - **E-Commerce**
@@ -76,6 +76,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * Quartz.NET
 * Humanizer
 * Scrutor
+* MassTransit (RabbitMQ)
 
 ## Related Projects
 * **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
@@ -90,15 +91,11 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```sh
    git clone https://github.com/marcin-niewczas/MyShop-API.git  
    ```
-2. Database
-   - Windows
-     - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
-   - Mac OS/Linux
-     - Go to `./src/MyShop.API/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`
+2. Database and message broker
+     - If you wanna use RabbitMQ, go to ```appsettings.json``` and set ```UseRabbitMQ``` to true (MessagingOptions section) and uncomment RabbitMQ image in ```docker-compose.yml```
      - Run **Docker App**
      - In root directory of repository run
        ```sh
-       cd ../../
        docker-compose up -d
        ```
 3. In root directory of repository run
@@ -115,18 +112,11 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 
 ### 2. myShop API
 1. Go to root folder of **myShop API** repository
-   ```sh
-   cd MyShop-API
-   ```
-2. Database
-   - Windows
-     - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
-   - Mac OS/Linux
-     - Go to `./src/MyShop.API/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`
+2. Database and message broker
+     - If you wanna use RabbitMQ, go to ```appsettings.json``` and set ```UseRabbitMQ``` to true (MessagingOptions section) and uncomment RabbitMQ image in ```docker-compose.yml```
      - Run **Docker App**
      - In root directory of repository run
        ```sh
-       cd ../../
        docker-compose up -d
        ```
 3. In root directory of repository run
@@ -135,9 +125,6 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```
 ### 3. myShop Angular Client
 1. Go to root folder of **myShop Angular Client** repository
-   ```sh
-   cd ../MyShop-Angular-Client
-   ```
 2. In root folder of repository install NPM packages
    ```sh
    npm install
@@ -149,15 +136,12 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 
 ### 4. myShop Pay
 1. Go to root folder of **myShop Pay** repository
-   ```sh
-   cd ../MyShop-Pay
-   ```
-3. Database
-   - Windows
-     - Nothing to do, but if you wanna run database via **Docker** go to `Mac OS/Linux` step
-   - Mac OS/Linux
-     - Go to `./MyShopPay/appsettings.json` and comment `WindowsConnectionString`, then uncomment `DockerConnectionString`     
-4. In root directory of repository run
+2. Database   
+     - In root directory of repository run
+       ```sh
+       docker-compose up -d
+       ```   
+3. In root directory of repository run
    ```sh
    dotnet run --project ./MyShopPay/MyShopPay.csproj --launch-profile https
    ```
