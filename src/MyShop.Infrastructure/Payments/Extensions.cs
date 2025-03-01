@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MyShop.Application.Utils;
 using MyShop.Infrastructure.Payments.Clients.MyShopPay;
 using MyShop.Infrastructure.Payments.Services;
 using MyShop.Infrastructure.Payments.Startegies;
 using System.Reflection;
+using static MyShop.Application.Utils.ExtensionsHelper;
 
 namespace MyShop.Infrastructure.Payments;
 internal static class Extensions
@@ -12,8 +14,10 @@ internal static class Extensions
         services.AddSingleton<IMyShopPayHttpClient, MyShopPayHttpClient>();
         services.AddScoped<IPaymentService, PaymentService>();
 
-        services.Scan(s => s.FromAssemblies(Assembly.GetExecutingAssembly())
-            .AddClasses(c => c.AssignableTo(typeof(IPaymentStrategy))).AsImplementedInterfaces().WithSingletonLifetime()
+        services.ScanAndRegisterDependenciesAsInterface(
+            typeof(IPaymentStrategy),
+            DependencyLifecycle.Singleton,
+            Assembly.GetExecutingAssembly()
             );
 
         return services;

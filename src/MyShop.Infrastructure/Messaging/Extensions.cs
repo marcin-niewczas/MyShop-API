@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyShop.Application.Abstractions;
 using MyShop.Application.Options;
+using MyShop.Application.Utils;
 using MyShop.Infrastructure.Commands.Handlers;
 using MyShop.Infrastructure.Events.Handlers;
 using MyShop.Infrastructure.Messaging.Brokers;
@@ -10,6 +11,7 @@ using MyShop.Infrastructure.Messaging.Dispatchers;
 using MyShop.Infrastructure.Messaging.Dispatchers.Interfaces;
 using MyShop.Infrastructure.Options;
 using System.Reflection;
+using static MyShop.Application.Utils.ExtensionsHelper;
 
 namespace MyShop.Infrastructure.Messaging;
 internal static class Extensions
@@ -92,8 +94,10 @@ internal static class Extensions
             services.AddSingleton<IAsyncMessageDispatcher, AsyncMessageDispatcher>();
         }
 
-        services.Scan(s => s.FromAssemblies(Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(Application.Extensions))!)
-            .AddClasses(c => c.AssignableTo(typeof(IEventHandler<>))).AsImplementedInterfaces().WithScopedLifetime()
+        services.ScanAndRegisterGenericDependencies(
+            typeof(IEventHandler<>),
+            DependencyLifecycle.Scoped,
+            [Assembly.GetExecutingAssembly(), Assembly.GetAssembly(typeof(Application.Extensions))!]
             );
 
         return services;

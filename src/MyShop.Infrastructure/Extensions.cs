@@ -7,7 +7,6 @@ using MyShop.Infrastructure.CronJobs;
 using MyShop.Infrastructure.DataAccessLayer;
 using MyShop.Infrastructure.Exceptions;
 using MyShop.Infrastructure.InfrastructureServices;
-using MyShop.Infrastructure.Logging;
 using MyShop.Infrastructure.Messaging;
 using MyShop.Infrastructure.Notifications;
 using MyShop.Infrastructure.Options;
@@ -33,7 +32,6 @@ public static class Extensions
             .AddSwaggerExtension()
             .AddHttpContextAccessor()
             .AddMessaging(configuration)
-            .AddCustomLogging()
             .AddNotifications()
             .AddHttpClient()
             .AddPayments()

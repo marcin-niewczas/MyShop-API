@@ -3,7 +3,7 @@ using MyShop.Application.CommandHandlers;
 using MyShop.Application.Commands;
 
 namespace MyShop.Infrastructure.Logging.Decorators;
-internal sealed class LoggingCommandHandlerDecorator<TCommand>(
+public sealed class LoggingCommandHandlerDecorator<TCommand>(
     ICommandHandler<TCommand> commandHandler,
     ILogger<LoggingCommandHandlerDecorator<TCommand>> logger
     ) : ICommandHandler<TCommand> where TCommand : class, ICommand
@@ -20,7 +20,7 @@ internal sealed class LoggingCommandHandlerDecorator<TCommand>(
     }
 }
 
-internal sealed class LoggingCommandHandlerDecorator<TCommand, TResult>(
+public sealed class LoggingCommandHandlerDecorator<TCommand, TResult>(
     ICommandHandler<TCommand, TResult> commandHandler,
     ILogger<LoggingCommandHandlerDecorator<TCommand, TResult>> logger
     ) : ICommandHandler<TCommand, TResult> where TCommand : class, ICommand<TResult>
