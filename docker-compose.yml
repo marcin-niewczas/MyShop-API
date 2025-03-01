@@ -9,11 +9,11 @@ services:
           - ACCEPT_EULA=Y
         ports:
           - 5434:1433
-    rabbitmq:
-        image: rabbitmq:3-management
-        container_name: rabbitmq
-        restart: unless-stopped
-        ports:
-          - 5672:5672
-          - 15672:15672
-          - 15692:15692
+    # rabbitmq:
+    #     image: rabbitmq:3-management
+    #     container_name: rabbitmq
+    #     restart: unless-stopped
+    #     ports:
+    #       - 5672:5672
+    #       - 15672:15672
+    #       - 15692:15692
