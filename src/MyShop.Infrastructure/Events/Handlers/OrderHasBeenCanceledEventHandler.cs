@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
@@ -15,7 +16,8 @@ internal sealed class OrderHasBeenCanceledEventHandler(
     IUnitOfWork unitOfWork,
     ILogger<OrderHasBeenCanceledEventHandler> logger,
     IOrderNotificationsSender orderNotificationsSender
-    ) : IEventHandler<OrderHasBeenCanceled>
+    ) : IEventHandler<OrderHasBeenCanceled>, 
+        IConsumer<OrderHasBeenCanceled>
 {
     public async Task HandleAsync(OrderHasBeenCanceled @event, CancellationToken cancellationToken = default)
     {
@@ -74,4 +76,7 @@ internal sealed class OrderHasBeenCanceledEventHandler(
             "Finished {RestoreQuantity} for {ProductVariantIds} {ProductVariants}.", $"Restore {nameof(ProductVariant.Quantity)}", productVariantsIds, nameof(Product.ProductVariants)
             );
     }
+
+    public Task Consume(ConsumeContext<OrderHasBeenCanceled> context)
+        => HandleAsync(context.Message);
 }

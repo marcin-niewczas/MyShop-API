@@ -32,7 +32,7 @@ public static class Extensions
             .AddInfrastructureServices()
             .AddSwaggerExtension()
             .AddHttpContextAccessor()
-            .AddMessaging()
+            .AddMessaging(configuration)
             .AddCustomLogging()
             .AddNotifications()
             .AddHttpClient()

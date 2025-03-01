@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
@@ -6,7 +7,8 @@ using MyShop.Core.Abstractions.Repositories;
 namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class ProductVariantOptionSortTypeHasBeenChangedToAlphabeticallyEventHandler(
     IUnitOfWork unitOfWork
-    ) : IEventHandler<ProductVariantOptionSortTypeHasBeenChangedToAlphabetically>
+    ) : IEventHandler<ProductVariantOptionSortTypeHasBeenChangedToAlphabetically>,
+        IConsumer<ProductVariantOptionSortTypeHasBeenChangedToAlphabetically>
 {
     public async Task HandleAsync(
         ProductVariantOptionSortTypeHasBeenChangedToAlphabetically @event,
@@ -31,4 +33,7 @@ internal sealed class ProductVariantOptionSortTypeHasBeenChangedToAlphabetically
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
+
+    public Task Consume(ConsumeContext<ProductVariantOptionSortTypeHasBeenChangedToAlphabetically> context)
+        => HandleAsync(context.Message);
 }

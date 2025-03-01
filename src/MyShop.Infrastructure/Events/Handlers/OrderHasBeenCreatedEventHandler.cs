@@ -1,4 +1,5 @@
-﻿using MyShop.Application.Abstractions;
+﻿using MassTransit;
+using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Exceptions;
@@ -16,7 +17,8 @@ internal sealed class OrderHasBeenCreatedEventHandler(
     IUnitOfWork unitOfWork,
     IOrderNotificationsSender orderNotificationsSender,
     IPaymentService paymentService
-    ) : IEventHandler<OrderHasBeenCreated>
+    ) : IEventHandler<OrderHasBeenCreated>, 
+        IConsumer<OrderHasBeenCreated>
 {
     public async Task HandleAsync(OrderHasBeenCreated @event, CancellationToken cancellationToken = default)
     {
@@ -73,4 +75,7 @@ internal sealed class OrderHasBeenCreatedEventHandler(
             cancellationToken: cancellationToken
             );
     }
+
+    public Task Consume(ConsumeContext<OrderHasBeenCreated> context)
+        => HandleAsync(context.Message);
 }

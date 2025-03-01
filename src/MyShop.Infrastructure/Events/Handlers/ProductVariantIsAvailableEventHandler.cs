@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
@@ -13,7 +14,8 @@ namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class ProductVariantIsAvailableEventHandler(
     IUnitOfWork unitOfWork,
     ICommonNotificationsSender commonNotificationsSender
-    ) : IEventHandler<ProductVariantIsAvailable>
+    ) : IEventHandler<ProductVariantIsAvailable>,
+        IConsumer<ProductVariantIsAvailable>
 {
     public async Task HandleAsync(
         ProductVariantIsAvailable @event,
@@ -62,4 +64,7 @@ internal sealed class ProductVariantIsAvailableEventHandler(
 
         await Task.WhenAll(tasks);
     }
+
+    public Task Consume(ConsumeContext<ProductVariantIsAvailable> context)
+        => HandleAsync(context.Message);
 }

@@ -1,4 +1,5 @@
-﻿using MyShop.Application.Abstractions;
+﻿using MassTransit;
+using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Models.Notifications;
@@ -10,7 +11,8 @@ namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class AuthEmailHasBeenChangedEventHandler(
     IUnitOfWork unitOfWork,
     ICommonNotificationsSender commonNotificationsSender
-    ) : IEventHandler<AuthEmailHasBeenChanged>
+    ) : IEventHandler<AuthEmailHasBeenChanged>,
+        IConsumer<AuthEmailHasBeenChanged>
 {
     public async Task HandleAsync(AuthEmailHasBeenChanged @event, CancellationToken cancellationToken = default)
     {
@@ -30,4 +32,7 @@ internal sealed class AuthEmailHasBeenChangedEventHandler(
             cancellationToken: cancellationToken
             );
     }
+
+    public Task Consume(ConsumeContext<AuthEmailHasBeenChanged> context)
+        => HandleAsync(context.Message);
 }

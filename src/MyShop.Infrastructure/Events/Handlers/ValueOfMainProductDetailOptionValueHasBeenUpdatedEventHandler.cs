@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
@@ -8,7 +9,8 @@ using MyShop.Core.Models.Products;
 namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class ValueOfMainProductDetailOptionValueHasBeenUpdatedEventHandler(
     IUnitOfWork unitOfWork
-    ) : IEventHandler<ValueOfMainProductDetailOptionValueHasBeenUpdated>
+    ) : IEventHandler<ValueOfMainProductDetailOptionValueHasBeenUpdated>,
+        IConsumer<ValueOfMainProductDetailOptionValueHasBeenUpdated>
 {
     public async Task HandleAsync(
         ValueOfMainProductDetailOptionValueHasBeenUpdated @event,
@@ -32,4 +34,7 @@ internal sealed class ValueOfMainProductDetailOptionValueHasBeenUpdatedEventHand
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
+
+    public Task Consume(ConsumeContext<ValueOfMainProductDetailOptionValueHasBeenUpdated> context)
+        => HandleAsync(context.Message);
 }

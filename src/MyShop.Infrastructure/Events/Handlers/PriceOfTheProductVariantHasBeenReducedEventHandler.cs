@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
@@ -13,7 +14,8 @@ namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class PriceOfTheProductVariantHasBeenReducedEventHandler(
     IUnitOfWork unitOfWork,
     ICommonNotificationsSender commonNotificationsSender
-    ) : IEventHandler<PriceOfTheProductVariantHasBeenReduced>
+    ) : IEventHandler<PriceOfTheProductVariantHasBeenReduced>, 
+        IConsumer<PriceOfTheProductVariantHasBeenReduced>
 {
     public async Task HandleAsync(
         PriceOfTheProductVariantHasBeenReduced @event,
@@ -62,4 +64,7 @@ internal sealed class PriceOfTheProductVariantHasBeenReducedEventHandler(
 
         await Task.WhenAll(tasks);
     }
+
+    public Task Consume(ConsumeContext<PriceOfTheProductVariantHasBeenReduced> context)
+        => HandleAsync(context.Message);
 }

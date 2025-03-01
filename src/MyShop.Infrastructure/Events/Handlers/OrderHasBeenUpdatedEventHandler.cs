@@ -1,4 +1,5 @@
-﻿using MyShop.Application.Abstractions;
+﻿using MassTransit;
+using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Models.Notifications;
@@ -12,7 +13,8 @@ namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class OrderHasBeenUpdatedEventHandler(
     IUnitOfWork unitOfWork,
     IOrderNotificationsSender orderNotificationsSender
-    ) : IEventHandler<OrderHasBeenUpdated>
+    ) : IEventHandler<OrderHasBeenUpdated>, 
+        IConsumer<OrderHasBeenUpdated>
 {
     public async Task HandleAsync(OrderHasBeenUpdated @event, CancellationToken cancellationToken = default)
     {
@@ -47,4 +49,7 @@ internal sealed class OrderHasBeenUpdatedEventHandler(
                 );
         }
     }
+
+    public Task Consume(ConsumeContext<OrderHasBeenUpdated> context)
+        => HandleAsync(context.Message);
 }

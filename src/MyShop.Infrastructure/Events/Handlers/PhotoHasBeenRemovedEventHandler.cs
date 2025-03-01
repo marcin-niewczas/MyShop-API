@@ -1,4 +1,5 @@
-﻿using MyShop.Application.Abstractions;
+﻿using MassTransit;
+using MyShop.Application.Abstractions;
 using MyShop.Application.Events;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Exceptions;
@@ -8,7 +9,8 @@ namespace MyShop.Infrastructure.Events.Handlers;
 internal sealed class PhotoHasBeenRemovedEventHandler(
     IUnitOfWork unitOfWork,
     IPhotoFileService photoFileService
-    ) : IEventHandler<PhotoHasBeenRemoved>
+    ) : IEventHandler<PhotoHasBeenRemoved>,
+        IConsumer<PhotoHasBeenRemoved>
 {
     public async Task HandleAsync(PhotoHasBeenRemoved @event, CancellationToken cancellationToken = default)
     {
@@ -41,4 +43,7 @@ internal sealed class PhotoHasBeenRemovedEventHandler(
     private Task<bool> RemoveUserPhotoAsync(
         UserPhoto photo
         ) => photoFileService.DeletePhotoAsync(photo.FilePath);
+
+    public Task Consume(ConsumeContext<PhotoHasBeenRemoved> context)
+        => HandleAsync(context.Message);
 }

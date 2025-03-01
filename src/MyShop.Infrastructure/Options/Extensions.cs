@@ -13,6 +13,7 @@ public static class Extensions
         services.Configure<AuthOptions>(configuration.GetRequiredSection(AuthOptions.Section));
         services.Configure<MyShopPayOptions>(configuration.GetRequiredSection(MyShopPayOptions.Section));
         services.Configure<MyShopHubOptions>(configuration.GetRequiredSection(MyShopHubOptions.Section));
+        services.Configure<MessagingOptions>(configuration.GetRequiredSection(MessagingOptions.Section));
 
         return services;
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MassTransit;
+using Microsoft.Extensions.Logging;
 using MyShop.Application.CommandHandlers;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Models.Notifications;
@@ -17,8 +18,9 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
     ILogger<ChangeOrdersPaymentStatusCommandHandler> logger,
     IPaymentService paymentService,
     IOrderNotificationsSender orderNotificationsSender
-    ) : ICommandHandler<ChangeOrdersPaymentStatus>
-{
+    ) : ICommandHandler<ChangeOrdersPaymentStatus>, 
+        IConsumer<ChangeOrdersPaymentStatus>
+{   
     public async Task HandleAsync(ChangeOrdersPaymentStatus command, CancellationToken cancellationToken = default)
     {
         var orders = await unitOfWork.OrderRepository.GetByPredicateAsync(
@@ -101,4 +103,7 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
             nameof(User.Orders)
             );
     }
+
+    public Task Consume(ConsumeContext<ChangeOrdersPaymentStatus> context)
+        => HandleAsync(context.Message);
 }
