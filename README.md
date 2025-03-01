@@ -5,19 +5,20 @@
 <br />
 
 ## Table of Contents
-1. **[About This Project](#about-this-project)**
+1. **[About The Project](#about-the-project)**
     - **[Features](#features)**
     - **[Built with](#built-with)**
 2. **[Related Projects](#related-projects)**
 3. **[Getting Started](#getting-started)**
 4. **[Launch myShop Projects](#launch-myshop-projects)**
-5. **[License](#license)**
+5. **[Authenticate](#authenticate)**
+6. **[License](#license)**
 
-## About This Project
-The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit of Work and Event Driven Architecture Patterns.
+## About The Project
+The main goal of **myShop API** project was to create a flexible E-Commerce API platform, that can be easily managed. The project has been built as Clean Architecture REST API and developed with CQRS (Command Query Responsibility Segregation), Unit Of Work and Event Driven Architecture Patterns.
 
 ### Clients
-- **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client) - [Screenshots](https://github.com/marcin-niewczas/MyShop-Angular-Client/blob/main/SCREENSHOTS.md)**
+- **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client) ( [Screenshots](https://github.com/marcin-niewczas/MyShop-Angular-Client/blob/main/SCREENSHOTS.md)** )
 
 ### Features
 - **For the entire platform**
@@ -63,7 +64,6 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 - **Authenticates**
   - JWT Authenticates with Refresh Tokens
   - Possibility of sessions on various devices
-  - Auth
   - Sign In
   - Sign Up
 ### Built with
@@ -74,6 +74,8 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * ASP.NET Core SignalR
 * Swagger
 * Quartz.NET
+* Humanizer
+* Scrutor
 
 ## Related Projects
 * **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
@@ -159,5 +161,15 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
    ```sh
    dotnet run --project ./MyShopPay/MyShopPay.csproj --launch-profile https
    ```
+## Authenticate
+| Email | Password |
+| :---: | :------: |
+| `super-admin@myshop.com` | `myShopProject1#` |
+| `admin@myshop.com` | `myShopProject1#` |
+| `manager@myshop.com` | `myShopProject1#` |
+| `seller@myshop.com` | `myShopProject1#` |
+| `customer1@myshop.com` | `myShopProject1#` |
+| `customer2@myshop.com` | `myShopProject1#` |
+  
 ## License
-Distributed under the **MIT Licence**. See **[LICENSE](./LICENSE)** for more information.
+Distributed under the **MIT License**. See **[LICENSE](./LICENSE)** for more information.
