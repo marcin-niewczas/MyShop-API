@@ -31,7 +31,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
       - Manager
       - Admin
       - SuperAdmin
-  - Message broker Channel or RabbitMQ
+  - Message broker (Channel or RabbitMQ)
     - CRON Jobs,
     - Async Background Tasks (e.g. Payment Processing with **[myShop Pay](https://github.com/marcin-niewczas/MyShop-Pay)** )
 - **E-Commerce**
@@ -57,7 +57,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 - **Account**
   - Basic Account Information Management
   - User Addresses Management
-  - User Orders Management
+  - User Orders Management (generating invoices in PDF format)
   - Notifications List
   - Favorite Products Management
   - Account Security Management
@@ -67,7 +67,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
   - Sign In
   - Sign Up
 ### Built with
-* .NET 8
+* .NET 9
 * ASP.NET Core Web API
 * ASP.NET Core Authentication JWT Bearer
 * Entity Framework Core (MS SQL)
@@ -76,6 +76,7 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * Quartz.NET
 * Humanizer
 * MassTransit (RabbitMQ)
+* MigraDoc
 
 ## Related Projects
 * **[myShop Angular Client](https://github.com/marcin-niewczas/MyShop-Angular-Client)**
