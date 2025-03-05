@@ -75,7 +75,6 @@ The main goal of **myShop API** project was to create a flexible E-Commerce API 
 * Swagger
 * Quartz.NET
 * Humanizer
-* Scrutor
 * MassTransit (RabbitMQ)
 
 ## Related Projects
