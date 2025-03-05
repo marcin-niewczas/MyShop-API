@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace MyShop.API;
@@ -8,6 +9,10 @@ internal static class Extensions
 {
     public static IServiceCollection AddApi(this IServiceCollection services, ConfigureHostBuilder host)
     {
+        var cultureInfo = new CultureInfo("en-US");
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
         host.UseSerilog((context, loggerConfiguration) =>
         {
             loggerConfiguration.ReadFrom.Configuration(context.Configuration);

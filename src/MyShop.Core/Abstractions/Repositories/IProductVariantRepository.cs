@@ -12,7 +12,7 @@ public interface IProductVariantRepository : IBaseReadRepository<ProductVariant>
         Guid id,
         CancellationToken cancellationToken = default
         );
-    Task<PagedResult<PagedProductVariantMpDto>> GetPagedProductVariantsMpByProductIdAsync(
+    Task<PagedResult<ProductVariant>> GetPagedProductVariantsMpByProductIdAsync(
         Guid productId,
         int pageNumber,
         int pageSize,

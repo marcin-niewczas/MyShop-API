@@ -55,45 +55,27 @@ internal sealed class ProductVariantRepository(
     }
 
 
-    public Task<PagedResult<PagedProductVariantMpDto>> GetPagedProductVariantsMpByProductIdAsync(
+    public Task<PagedResult<ProductVariant>> GetPagedProductVariantsMpByProductIdAsync(
         Guid productId,
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken = default
         )
     {
-
         return _dbSet
-            .Where(e => e.ProductId == productId)
-            .OrderBy(o => o.SortPriority)
-            .Select(e => new PagedProductVariantMpDto
-            {
-                Id = e.Id,
-                CreatedAt = e.CreatedAt,
-                UpdatedAt = e.UpdatedAt,
-                Quantity = e.Quantity,
-                Price = e.Price,
-                EncodedName = e.EncodedName,
-                SkuId = e.SkuId,
-                ProductVariantValues = e.Product
-                    .ProductProductVariantOptions
-                    .OrderBy(o => o.Position)
-                    .Join(e.ProductVariantOptionValues,
-                          k => k.ProductVariantOptionId,
-                          k => k.ProductOptionId,
-                          (option, value) => new OptionNameValueId(
-                              option.ProductVariantOptionId,
-                              option.ProductVariantOption.Name,
-                              value.Value
-                              )).ToArray()
-            })
-            .AsNoTracking()
-            .ToPagedResultAsync(
-                pageNumber,
-                pageSize,
-                asSplitQuery: true,
-                cancellationToken: cancellationToken
-            );
+                .Include(i => i.ProductVariantOptionValues)
+                .Include(i => i.Product)
+                .ThenInclude(i => i.ProductProductVariantOptions.OrderBy(o => o.Position))
+                .ThenInclude(i => i.ProductVariantOption)
+                .Where(e => e.ProductId == productId)
+                .OrderBy(o => o.SortPriority)
+                .AsNoTracking()
+                .ToPagedResultAsync(
+                    pageNumber,
+                    pageSize,
+                    asSplitQuery: true,
+                    cancellationToken: cancellationToken
+                    );
     }
 
 

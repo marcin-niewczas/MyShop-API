@@ -1,4 +1,5 @@
-﻿using MyShop.Application.Queries.ManagementPanel.Products;
+﻿using MyShop.Application.Mappings;
+using MyShop.Application.Queries.ManagementPanel.Products;
 using MyShop.Application.Responses;
 using MyShop.Core.Abstractions.Repositories;
 using MyShop.Core.Dtos.ManagementPanel;
@@ -21,7 +22,7 @@ internal sealed class GetPagedProductVariantsByProductIdMpQueryHandler(
         );
 
         return new(
-            pagedResult.Data,
+            pagedResult.Data.ToPagedProductVariantMpDtos(),
             pagedResult.TotalCount,
             query.PageNumber,
             query.PageSize
