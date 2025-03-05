@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyShop.Infrastructure.Commands;
 using MyShop.Infrastructure.CronJobs;
 using MyShop.Infrastructure.DataAccessLayer;
+using MyShop.Infrastructure.DocumentsGenerator;
 using MyShop.Infrastructure.Exceptions;
 using MyShop.Infrastructure.InfrastructureServices;
 using MyShop.Infrastructure.Messaging;
@@ -36,6 +37,7 @@ public static class Extensions
             .AddHttpClient()
             .AddPayments()
             .AddCronJobs(configuration)
+            .AddDocumentsGenerator()
             .AddCommandHandlers();
 
         return services;

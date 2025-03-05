@@ -61,6 +61,12 @@ public static class OrderEndpointsGroup
             .ProducesProblem(StatusCodes.Status404NotFound)
             .RequireAuthorization(PolicyNames.HasGuestPermission);
 
+        app.MapGet("/{id:guid}/invoices/{invoiceId:guid}", GetInvoiceAsync)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status403Forbidden)
+            .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization(PolicyNames.HasCustomerPermission);
+
         app.MapGet("/validator-parameters", GetOrderValidatorParametersAsync)
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status403Forbidden)
@@ -93,6 +99,17 @@ public static class OrderEndpointsGroup
         [FromServices] IQueryHandler<GetOrderStatusEc, ApiResponse<OrderStatusEcDto>> handler,
         CancellationToken cancellationToken
         ) => TypedResults.Ok(await handler.HandleAsync(new(id), cancellationToken));
+
+    private static async Task<FileStreamHttpResult> GetInvoiceAsync(
+        [AsParameters] GetInvoiceEc query,
+        [FromServices] IQueryHandler<GetInvoiceEc, MemoryStream> handler,
+        CancellationToken cancellationToken
+        )
+    {
+        var result = await handler.HandleAsync(query, cancellationToken);
+       
+        return TypedResults.File(result, "application/pdf", "invoice");
+    }
 
     private static async Task<NoContent> CancelOrderAsync(
         [AsParameters] CancelOrderEc command,

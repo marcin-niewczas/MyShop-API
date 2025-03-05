@@ -12,6 +12,7 @@ internal sealed class UnitOfWork(
     public ICategoryRepository CategoryRepository => _categoryRepository ??= new CategoryRepository(dbContext);
     public IDashboardRepository DashboardRepository => _dashboardRepository ??= new DashboardRepository(dbContext);
     public IFavoriteRepository FavoriteRepository => _favoriteRepository ??= new FavoriteRepository(dbContext);
+    public IInvoiceRepository InvoiceRepository => _invoiceRepository ??= new InvoiceRepository(dbContext);
     public IMainPageSectionRepository MainPageSectionRepository => _mainPageSectionRepository ??= new MainPageSectionRepository(dbContext);
     public INotificationRepository NotificationRepository => _notificationRepository ??= new NotificationRepository(dbContext);
     public INotificationRegisteredUserRepository NotificationRegisteredUserRepository => _notificationRegisteredUserRepository ??= new NotificationRegisteredUserRepository(dbContext);
@@ -45,6 +46,7 @@ internal sealed class UnitOfWork(
     private ICategoryRepository _categoryRepository = default!;
     private IDashboardRepository _dashboardRepository = default!;
     private IFavoriteRepository _favoriteRepository = default!;
+    private IInvoiceRepository _invoiceRepository = default!;
     private IMainPageSectionRepository _mainPageSectionRepository = default!;
     private INotificationRepository _notificationRepository = default!;
     private INotificationRegisteredUserRepository _notificationRegisteredUserRepository = default!;

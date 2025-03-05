@@ -63,6 +63,7 @@ internal static class OrderMappingExtension
             RedirectPaymentUri = model.RedirectPaymentUri,
             CreatedAt = model.CreatedAt,
             UpdatedAt = model.UpdatedAt,
+            InvoiceId = model.InvoiceId,
             OrderStatusHistories = model.OrderStatusHistories
                 .OrderBy(o => o.CreatedAt)
                 .Select(h => new OrderStatusHistoryDto

@@ -17,6 +17,7 @@ internal sealed class MainDbContext(
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Favorite> Favorites { get; set; }
     public DbSet<Guest> Guests { get; set; }
+    public DbSet<Invoice> Invoices { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<NotificationRegisteredUser> NotificationRegisteredUsers { get; set; }
     public DbSet<Order> Orders { get; set; }

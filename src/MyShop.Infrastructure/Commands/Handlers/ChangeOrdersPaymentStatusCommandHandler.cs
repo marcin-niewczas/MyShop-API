@@ -18,9 +18,9 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
     ILogger<ChangeOrdersPaymentStatusCommandHandler> logger,
     IPaymentService paymentService,
     IOrderNotificationsSender orderNotificationsSender
-    ) : ICommandHandler<ChangeOrdersPaymentStatus>, 
+    ) : ICommandHandler<ChangeOrdersPaymentStatus>,
         IConsumer<ChangeOrdersPaymentStatus>
-{   
+{
     public async Task HandleAsync(ChangeOrdersPaymentStatus command, CancellationToken cancellationToken = default)
     {
         var orders = await unitOfWork.OrderRepository.GetByPredicateAsync(
@@ -50,11 +50,14 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
             .Select(r => r.Order)
             .ToList();
 
+        var lastInvoiceNumber = await unitOfWork.InvoiceRepository.GetLastInvoiceNumberAsync(cancellationToken: cancellationToken) ?? 0;
+
         if (updatedOrders.Count > 0)
         {
             List<Notification> notificationList = [];
             List<(Notification? Notification, Order Order)> notificationOrderList = [];
             Notification? notification = null;
+            List<Invoice>? invoices = [];
 
             foreach (var order in updatedOrders)
             {
@@ -74,6 +77,12 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
                     notification = null;
                 }
 
+                if (order.Status == OrderStatus.PaymentReceived)
+                {
+                    lastInvoiceNumber += 1;
+                    invoices.Add(new(order, lastInvoiceNumber));
+                }
+
                 notificationOrderList.Add((notification, order));
             }
 
@@ -81,6 +90,14 @@ internal sealed class ChangeOrdersPaymentStatusCommandHandler(
             {
                 await unitOfWork.AddRangeAsync(
                     notificationList,
+                    cancellationToken
+                    );
+            }
+
+            if (invoices.Count > 0)
+            {
+                await unitOfWork.AddRangeAsync(
+                    invoices,
                     cancellationToken
                     );
             }

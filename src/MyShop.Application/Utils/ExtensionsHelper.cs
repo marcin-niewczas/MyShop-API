@@ -54,7 +54,11 @@ public static class ExtensionsHelper
         Assembly[] assemblies
         )
     {
-        _ = assemblies.Select(a => services.ScanAndRegisterGenericDependencies(serviceType, dependencyLifecycle, a));
+        foreach (var assembly in assemblies)
+        {
+            services.ScanAndRegisterGenericDependencies(serviceType, dependencyLifecycle, assembly);
+        }
+
         return services;
     }
 

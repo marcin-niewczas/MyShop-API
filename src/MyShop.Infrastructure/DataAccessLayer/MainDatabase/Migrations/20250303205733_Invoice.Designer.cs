@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyShop.Infrastructure.DataAccessLayer.MainDatabase;
 
@@ -11,9 +12,11 @@ using MyShop.Infrastructure.DataAccessLayer.MainDatabase;
 namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250303205733_Invoice")]
+    partial class Invoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,13 +164,20 @@ namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("InvoiceNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("Invoices");
                 });
@@ -215,9 +225,6 @@ namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid?>("InvoiceId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -261,10 +268,6 @@ namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("InvoiceId")
-                        .IsUnique()
-                        .HasFilter("[InvoiceId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -1145,19 +1148,24 @@ namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Migrations
                     b.Navigation("RegisteredUser");
                 });
 
+            modelBuilder.Entity("MyShop.Core.Models.Orders.Invoice", b =>
+                {
+                    b.HasOne("MyShop.Core.Models.Orders.Order", "Order")
+                        .WithOne("Invoice")
+                        .HasForeignKey("MyShop.Core.Models.Orders.Invoice", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("MyShop.Core.Models.Orders.Order", b =>
                 {
-                    b.HasOne("MyShop.Core.Models.Orders.Invoice", "Invoice")
-                        .WithOne("Order")
-                        .HasForeignKey("MyShop.Core.Models.Orders.Order", "InvoiceId");
-
                     b.HasOne("MyShop.Core.Models.Users.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Invoice");
 
                     b.Navigation("User");
                 });
@@ -1449,14 +1457,11 @@ namespace MyShop.Infrastructure.DataAccessLayer.MainDatabase.Migrations
                     b.Navigation("NotificationRegisteredUsers");
                 });
 
-            modelBuilder.Entity("MyShop.Core.Models.Orders.Invoice", b =>
-                {
-                    b.Navigation("Order")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MyShop.Core.Models.Orders.Order", b =>
                 {
+                    b.Navigation("Invoice")
+                        .IsRequired();
+
                     b.Navigation("OrderProducts");
 
                     b.Navigation("OrderStatusHistories");

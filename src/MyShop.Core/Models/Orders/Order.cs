@@ -26,6 +26,8 @@ public sealed class Order : BaseTimestampEntity
     public Uri? RedirectPaymentUri { get; private set; }
     public User User { get; private set; } = default!;
     public Guid UserId { get; private set; }
+    public Invoice? Invoice { get; private set; } = default!;
+    public Guid? InvoiceId { get; private set; } = default!;
     public IReadOnlyCollection<OrderProduct> OrderProducts => _orderProducts;
     private readonly List<OrderProduct> _orderProducts = default!;
     public IReadOnlyCollection<OrderStatusHistory> OrderStatusHistories => _orderStatusHistories;

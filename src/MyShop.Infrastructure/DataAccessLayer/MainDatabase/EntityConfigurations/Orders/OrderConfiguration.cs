@@ -79,5 +79,11 @@ internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder
             .Property(e => e.Status)
             .HasOrderStatusConfiguration();
+
+        builder
+            .HasOne(e => e.Invoice)
+            .WithOne(e => e.Order)
+            .HasForeignKey<Order>(e => e.InvoiceId)
+            .IsRequired(false);
     }
 }

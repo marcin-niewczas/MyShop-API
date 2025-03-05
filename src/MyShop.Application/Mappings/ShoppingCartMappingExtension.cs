@@ -42,17 +42,22 @@ internal static class ShoppingCartMappingExtension
         else
         {
             ProductVariantPhoto? tempPhoto;
+            ProductVariantOptionValue mainProductVariantOptionValue;
 
             foreach (var item in model.ShoppingCartItems)
             {
                 tempPhoto = item.ProductVariant.Photos.FirstOrDefault();
+                mainProductVariantOptionValue = item
+                                .ProductVariant
+                                .ProductVariantOptionValues
+                                .First(x => x.ProductVariantOption.ProductOptionSubtype == ProductOptionSubtype.Main);
 
                 shoppingCartDetailItemDtos.Add(new ShoppingCartItemDetailEcDto
                 {
                     ShoppingCartItemId = item.Id,
                     EncodedName = item.ProductVariant.EncodedName,
                     FullName = $"{item.ProductVariant.Product.ProductDetailOptionValues.First().Value} {item.ProductVariant.Product.Name}",
-                    MainProductVariantOption = item.ProductVariant.ProductVariantOptionValues.Select(x => new OptionNameValue(x.ProductVariantOption.Name, x.Value)).First(),
+                    MainProductVariantOption = new OptionNameValue(mainProductVariantOptionValue.ProductVariantOption.Name, mainProductVariantOptionValue.Value),
                     AdditionalProductVariantOptions = GetSortedAdditionalProductVariantOptionValues(item.ProductVariant).Select(x => new OptionNameValue(x.ProductVariantOption.Name, x.Value)).ToArray(),
                     PhotoUrl = tempPhoto?.Uri,
                     PhotoAlt = tempPhoto?.Alt,

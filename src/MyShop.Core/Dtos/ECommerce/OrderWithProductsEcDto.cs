@@ -19,6 +19,7 @@ public sealed record OrderWithProductsEcDto : BaseTimestampDto
     public required string DeliveryMethod { get; init; }
     public required string PaymentMethod { get; init; }
     public required Uri? RedirectPaymentUri { get; init; }
+    public required Guid? InvoiceId { get; init; }
     public required IReadOnlyCollection<OrderProductEcDto> OrderProducts { get; init; }
     public required IReadOnlyCollection<OrderStatusHistoryDto> OrderStatusHistories { get; init; }
 }

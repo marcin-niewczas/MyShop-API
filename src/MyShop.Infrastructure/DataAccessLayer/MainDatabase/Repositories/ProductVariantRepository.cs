@@ -87,9 +87,11 @@ internal sealed class ProductVariantRepository(
                               value.Value
                               )).ToArray()
             })
+            .AsNoTracking()
             .ToPagedResultAsync(
                 pageNumber,
                 pageSize,
+                asSplitQuery: true,
                 cancellationToken: cancellationToken
             );
     }

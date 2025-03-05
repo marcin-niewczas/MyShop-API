@@ -8,6 +8,7 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     IDashboardRepository DashboardRepository { get; }
     ICategoryRepository CategoryRepository { get; }
     IFavoriteRepository FavoriteRepository { get; }
+    IInvoiceRepository InvoiceRepository { get; }
     IMainPageSectionRepository MainPageSectionRepository { get; }
     INotificationRepository NotificationRepository { get; }
     INotificationRegisteredUserRepository NotificationRegisteredUserRepository { get; }
